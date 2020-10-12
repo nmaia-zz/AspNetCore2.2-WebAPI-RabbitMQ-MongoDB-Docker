@@ -1,0 +1,61 @@
+﻿version: "3.8"
+services:
+###############################################################
+    demoapi:
+        image: demoapi:dev    
+        ports:
+            - "8181:80"        
+        build: 
+            context: .
+            dockerfile: src/Demo.API/Dockerfile
+        restart: unless-stopped
+        depends_on:
+            - mongo
+            - rabbitmq
+            - mongo-express        
+        networks:
+            - mynetwork
+###############################################################
+    mongo-express:
+        image: mongo-express
+        ports:
+            - "19081:8081"
+        restart: unless-stopped
+        environment:
+            ME_CONFIG_BASICAUTH_USERNAME: user
+            ME_CONFIG_BASICAUTH_PASSWORD: user123
+            ME_CONFIG_MONGODB_PORT: 27017
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: root123
+        depends_on:
+            - mongo
+        networks:
+            - mynetwork            
+###############################################################
+    mongo:
+        image: mongo
+        ports:
+            - "37017:27017"
+        restart: unless-stopped
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root123
+        networks:
+            - mynetwork           
+###############################################################
+    rabbitmq:
+        image: rabbitmq:3.8.9-management-alpine
+        ports:
+            - "6672:5672"
+            - "25672:15672"
+        restart: unless-stopped
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+            RABBITMQ_DEFAULT_VHOST: challenge-dev
+        networks:
+            - mynetwork            
+###############################################################            
+networks:
+    mynetwork:
+        driver: bridge
