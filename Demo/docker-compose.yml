@@ -1,25 +1,30 @@
-﻿version: "3.8"
+version: "3.4"
 services:
 ###############################################################
-    demoapi:
-        image: demoapi:dev    
+    demo.api:
+        image: ${DOCKER_REGISTRY-}demoapi
         ports:
-            - "8181:80"        
+            - "80:80"        
+            - "443:443"
         build: 
             context: .
             dockerfile: src/Demo.API/Dockerfile
         restart: unless-stopped
+        links:
+            - mongo
         depends_on:
             - mongo
-            - rabbitmq
-            - mongo-express        
+            - rabbitmq        
+        environment:
+            MONGOCONNECTION: "mongodb://localhost:27017"
+            DATABASENAME: "Censo"
         networks:
             - mynetwork
 ###############################################################
     mongo-express:
         image: mongo-express
         ports:
-            - "19081:8081"
+            - "8081:8081"
         restart: unless-stopped
         environment:
             ME_CONFIG_BASICAUTH_USERNAME: user
@@ -35,7 +40,7 @@ services:
     mongo:
         image: mongo
         ports:
-            - "37017:27017"
+            - "27017:27017"
         restart: unless-stopped
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
@@ -46,8 +51,8 @@ services:
     rabbitmq:
         image: rabbitmq:3.8.9-management-alpine
         ports:
-            - "6672:5672"
-            - "25672:15672"
+            - "5672:5672"
+            - "15672:15672"
         restart: unless-stopped
         environment:
             RABBITMQ_DEFAULT_USER: guest
