@@ -10,14 +10,9 @@ services:
             context: .
             dockerfile: src/Demo.API/Dockerfile
         restart: unless-stopped
-        links:
-            - mongo
         depends_on:
             - mongo
             - rabbitmq        
-        environment:
-            MONGOCONNECTION: "mongodb://localhost:27017"
-            DATABASENAME: "Censo"
         networks:
             - mynetwork
 ###############################################################
@@ -51,13 +46,18 @@ services:
     rabbitmq:
         image: rabbitmq:3.8.9-management-alpine
         ports:
-            - "5672:5672"
-            - "15672:15672"
+            - "5672:5672"   #AMQP
+            - "15672:15672" #Management
         restart: unless-stopped
         environment:
-            RABBITMQ_DEFAULT_USER: guest
-            RABBITMQ_DEFAULT_PASS: guest
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: pass
             RABBITMQ_DEFAULT_VHOST: challenge-dev
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:15672"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
         networks:
             - mynetwork            
 ###############################################################            
