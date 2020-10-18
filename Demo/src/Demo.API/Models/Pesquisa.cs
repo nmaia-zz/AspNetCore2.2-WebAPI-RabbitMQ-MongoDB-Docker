@@ -6,7 +6,8 @@ namespace Demo.API.Models
     public class Pesquisa
     {
         [BsonId]
-        public ObjectId PesquisaId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string PesquisaId { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string Cor { get; set; }

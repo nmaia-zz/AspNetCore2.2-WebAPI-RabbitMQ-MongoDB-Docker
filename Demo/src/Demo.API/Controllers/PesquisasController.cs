@@ -2,8 +2,8 @@
 using Demo.API.Models;
 using Demo.API.RabbitMQ;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
@@ -11,28 +11,35 @@ namespace Demo.API.Controllers
     [ApiController]
     public class PesquisasController : ControllerBase
     {
-        private CensoDemograficoContext _mongoContext;
-
-        public PesquisasController(CensoDemograficoContext mongoContext)
-        {
-            _mongoContext = mongoContext;
-        }
-
-        // GET api/pesquisas
+        // GET api/pesquisas/listar
+        [Route("listar")]
         [HttpGet]
         public ActionResult<IEnumerable<Pesquisa>> Get()
         {
-            var rabbitmq = new Mensagem();
-            rabbitmq.Publicar();
+            var result = new MongoDBContext().ObterTodos<Pesquisa>();
+            return Ok(result);
+        }            
 
-            return Ok(_mongoContext.ObterTodos<Pesquisa>());
-        }
-
-        // POST api/pesquisas
+        // POST api/pesquisas/inserir
+        [Route("inserir")]
         [HttpPost]
-        public void Post([FromBody] Pesquisa pesquisa)
+        public ActionResult<Pesquisa> Post([FromBody] Pesquisa pesquisa)
         {
-            _mongoContext.InsereItem("Pesquisas", pesquisa);
+            QueueManager queueManager = new QueueManager();
+            queueManager.Publish(pesquisa);
+
+            return Accepted(pesquisa);
         }
+
+        [Route("integrar")]
+        [HttpPost]
+        public ActionResult<string> IntegrarPesquisas()
+        {
+            QueueManager queueManager = new QueueManager();
+            queueManager.Subcribe("myqueue");
+
+            return Ok("Pesquisas Integradas");
+        }
+
     }
 }

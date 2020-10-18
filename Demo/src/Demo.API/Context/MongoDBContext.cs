@@ -1,21 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Demo.API.Context
 {
-    public class CensoDemograficoContext
+    public class MongoDBContext
     {
-        private IConfiguration _configuration;
         private IMongoDatabase _db;
         private MongoClient _client;
 
-        public CensoDemograficoContext(IConfiguration configuration)
+        public MongoDBContext()
         {
-            _configuration = configuration;
-
-            _client = new MongoClient(_configuration.GetConnectionString("ConexaoDBCensoDemografico"));
+            _client = new MongoClient("mongodb://root:root123@mongo:27017");
 
             _db = _client.GetDatabase("DBCensoDemografico");
         }
@@ -27,9 +23,9 @@ namespace Demo.API.Context
         }
 
         public void InsereItem<T>(string document, T pesquisa)
-        {            
+        {
             var collection = _db.GetCollection<T>(document);
-            
+
             collection.InsertOne(pesquisa);
         }
     }
