@@ -1,0 +1,27 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2
+    - name: Install dependencies
+      run: dotnet restore Demo.sln
+      working-directory: ./Demo
+    - name: Build
+      run: dotnet build Demo.sln --configuration Release --no-restore
+      working-directory: ./Demo
+    #- name: Test
+     # run: dotnet test --no-restore --verbosity normal
