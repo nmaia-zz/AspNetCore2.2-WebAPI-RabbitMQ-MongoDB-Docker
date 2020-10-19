@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Demo.API.Context;
+﻿using AutoMapper;
+using Demo.Contracts.Database;
+using Demo.Contracts.RabbitMQ;
+using Demo.Contracts.Repository;
+using Demo.Infra.Data;
+using Demo.Infra.Mappings;
+using Demo.Infra.RabbitMQ;
+using Demo.Infra.RabbitMQ.HostedServices;
+using Demo.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Demo.API
 {
@@ -26,9 +27,18 @@ namespace Demo.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<MongoDBContext>();
+            MongoDBPersistence.Setup();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddHostedService<ConsumerHostedService>();
+
+            services.AddAutoMapper(typeof(Startup));
+            
+            services.AddSingleton<IMongoDBContext, MongoDBContext>();                        
+            services.AddSingleton<IRepositoryResearch, RespositoryResearch>();            
+            services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
+            services.AddScoped<ISetupConnection, SetupConnection>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

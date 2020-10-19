@@ -4,12 +4,14 @@ services:
     demo.api:
         image: ${DOCKER_REGISTRY-}demoapi
         ports:
-            - "80:80"        
+            - "80:80"    
             - "443:443"
         build: 
             context: .
             dockerfile: src/Demo.API/Dockerfile
         restart: unless-stopped
+        links:
+            - mongo        
         depends_on:
             - mongo
             - rabbitmq        
@@ -27,6 +29,8 @@ services:
             ME_CONFIG_MONGODB_PORT: 27017
             ME_CONFIG_MONGODB_ADMINUSERNAME: root
             ME_CONFIG_MONGODB_ADMINPASSWORD: root123
+        links:
+            - mongo
         depends_on:
             - mongo
         networks:
@@ -39,7 +43,7 @@ services:
         restart: unless-stopped
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: root123
+            MONGO_INITDB_ROOT_PASSWORD: root123     
         networks:
             - mynetwork           
 ###############################################################

@@ -1,13 +1,7 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Demo.API.Models
+﻿namespace Demo.API.DTO
 {
-    public class Pesquisa
+    public class PesquisaDto
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string PesquisaId { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string Cor { get; set; }

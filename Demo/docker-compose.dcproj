@@ -3,9 +3,9 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>d6f58285-e28a-4d93-b897-35f1bd5745f4</ProjectGuid>
+    <ProjectGuid>73ac8cb5-b2bf-4e9f-afe9-3508bfe6468e</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api/values</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api/researches</DockerServiceUrl>
     <DockerServiceName>demo.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
