@@ -8,7 +8,7 @@ namespace Demo.API.Configuration
     {
         public AutomapperConfig()
         {
-            CreateMap<Research, PesquisaDto>().ReverseMap();
+            CreateMap<Research, ResearchDto>().ReverseMap();
 
             // exemplo de mapeamenteo de propriedades complexas (via relacionamento entre entidades)
             /*

@@ -1,6 +1,6 @@
 ﻿namespace Demo.API.DTO
 {
-    public class PesquisaDto
+    public class ResearchDto
     {
         public string Nome { get; set; }
         public string Sobrenome { get; set; }

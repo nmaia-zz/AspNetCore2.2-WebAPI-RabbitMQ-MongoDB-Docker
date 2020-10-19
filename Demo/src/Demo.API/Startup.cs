@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Demo.Business.Reports;
+using Demo.Contracts.Business;
 using Demo.Contracts.Database;
 using Demo.Contracts.RabbitMQ;
 using Demo.Contracts.Repository;
@@ -37,6 +39,8 @@ namespace Demo.API
             services.AddSingleton<IRepositoryResearch, RespositoryResearch>();            
             services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
             services.AddScoped<ISetupConnection, SetupConnection>();
+            services.AddScoped<IRegionalReports, RegionalReports>();
+            services.AddScoped<IFamilyTreeReports, FamilyTreeReports>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
         }
