@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Demo.API.DTO;
+using Demo.API.ViewModels;
 using Demo.Domain.Entities;
 
 namespace Demo.API.Configuration
@@ -8,7 +8,8 @@ namespace Demo.API.Configuration
     {
         public AutomapperConfig()
         {
-            CreateMap<Research, ResearchDto>().ReverseMap();
+            CreateMap<Research, ResearchViewModel>().ReverseMap();
+            CreateMap<Person, PersonViewModel>().ReverseMap();
 
             // exemplo de mapeamenteo de propriedades complexas (via relacionamento entre entidades)
             /*

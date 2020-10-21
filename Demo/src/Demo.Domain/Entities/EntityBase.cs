@@ -3,9 +3,9 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Demo.Domain.Entities
 {
-    public abstract class Entity
+    public abstract class EntityBase
     {
-        public Entity()
+        public EntityBase()
         {
             this.Id = ObjectId.GenerateNewId().ToString();
         }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Demo.API.DTO;
+using Demo.API.ViewModels;
 using Demo.Contracts.Business;
 using Demo.Contracts.RabbitMQ;
 using Demo.Contracts.Repository;
@@ -35,7 +35,7 @@ namespace Demo.API.Controllers
 
         // GET api/researches/list-all
         [HttpGet, Route("list-all")]
-        public async Task<ActionResult<IEnumerable<ResearchDto>>> GetAllResearches()
+        public async Task<ActionResult<ResearchViewModel>> GetAllResearches()
         {
             var response = await _researchRepository.GetAll();
             return Ok(response); // http - 200
@@ -43,24 +43,21 @@ namespace Demo.API.Controllers
 
         // POST api/researches/inset-one
         [HttpPost, Route("insert-one")]
-        public ActionResult<ResearchDto> Post([FromBody] ResearchDto research)
+        public ActionResult<ResearchViewModel> Post([FromBody] ResearchViewModel model)
         {
-            var item = _mapper.Map<Research>(research);
+            var research = _mapper.Map<Research>(model);
 
             // TODO: Criar objeto para passar como parametro para o metodo abaixo
-            _queueManagementResearch.Publish(item, "demo.queue", "demo.exchange", "demo.queue*");
+            _queueManagementResearch.Publish(research, "demo.queue", "demo.exchange", "demo.queue*");
 
-            return Accepted(research); // http - 202
+            return Accepted(model); // http - 202
         }
 
         // GET api/researches/reports/get-percentage-by-region
-        [HttpGet, Route("reports/get-percentage-by-region")]
-        public async Task<ActionResult<double>> GetPercentageByRegion()
+        [HttpGet, Route("reports/get-percentage-by-region/{region}")]
+        public async Task<ActionResult<Dictionary<string, decimal>>> GetPercentageByRegion([FromRoute] string region)
         {
-            var allResearches = await _researchRepository.GetAll();
-
-            // TODO: Implementar este metodo
-            var reportResult = await _regionalReports.PercentageReport(allResearches);
+            var reportResult = await _regionalReports.GetPercentageByRegionReport(region);
 
             return Ok(reportResult); // http - 200
         }

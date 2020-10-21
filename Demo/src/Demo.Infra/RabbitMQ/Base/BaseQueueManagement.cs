@@ -17,7 +17,7 @@ namespace Demo.Infra.RabbitMQ.Base
             _connectionFactory = connectionFactory;
         }
 
-        public virtual void Publish(TEntity obj, string queue, string exchange, string routingKey)
+        public void Publish(TEntity obj, string queue, string exchange, string routingKey)
         {
             try
             {
@@ -54,11 +54,6 @@ namespace Demo.Infra.RabbitMQ.Base
             {
                 throw new Exception(ex.Message);
             }
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

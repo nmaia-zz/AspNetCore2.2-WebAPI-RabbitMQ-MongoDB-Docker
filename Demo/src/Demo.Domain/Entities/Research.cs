@@ -1,12 +1,12 @@
-﻿namespace Demo.Domain.Entities
+﻿using Demo.Domain.Enums;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace Demo.Domain.Entities
 {
-    public class Research : Entity
+    public class Research : EntityBase
     {
-        public string Nome { get; set; }
-        public string Sobrenome { get; set; }
-        public string Cor { get; set; }
-        public string Filiacao { get; set; }
-        public string Filhos { get; set; }
-        public string Escolaridade { get; set; }
+        public Region Region { get; set; }
+
+        public Person Person { get; set; }
     }
 }

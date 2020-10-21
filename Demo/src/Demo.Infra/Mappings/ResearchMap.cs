@@ -7,9 +7,10 @@ namespace Demo.Infra.Mappings
     {
         public static void ConfigureMap()
         {
-            BsonClassMap.RegisterClassMap<Entity>(map => {
+            BsonClassMap.RegisterClassMap<EntityBase>(map => {
 
                 map.AutoMap();
+                map.SetIgnoreExtraElements(true);
                 map.MapIdMember(x => x.Id);
 
             });
@@ -18,12 +19,22 @@ namespace Demo.Infra.Mappings
 
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);
-                map.MapMember(x => x.Nome);
-                map.MapMember(x => x.Sobrenome);
-                map.MapMember(x => x.Cor);
-                map.MapMember(x => x.Escolaridade);
-                map.MapMember(x => x.Filiacao);
-                map.MapMember(x => x.Filhos);
+                map.MapMember(x => x.Region);
+                map.MapMember(x => x.Person);
+
+            });
+
+            BsonClassMap.RegisterClassMap<Person>(map => {
+
+                map.AutoMap();
+                map.SetIgnoreExtraElements(true);
+                map.MapMember(x => x.Name);
+                map.MapMember(x => x.LastName);
+                map.MapMember(x => x.Gender);
+                map.MapMember(x => x.SkinColor);
+                map.MapMember(x => x.Schooling);
+                map.MapMember(x => x.Filiation);
+                map.MapMember(x => x.Children);
 
             });
         }
