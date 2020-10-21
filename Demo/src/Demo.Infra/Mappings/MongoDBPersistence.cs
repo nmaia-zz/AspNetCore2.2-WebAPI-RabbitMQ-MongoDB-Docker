@@ -7,7 +7,9 @@ namespace Demo.Infra.Mappings
     {
         public static void Setup()
         {
+            EntityBaseMap.ConfigureMap();
             ResearchMap.ConfigureMap();
+            PersonMap.ConfigureMap();
 
             var pack = new ConventionPack
             {

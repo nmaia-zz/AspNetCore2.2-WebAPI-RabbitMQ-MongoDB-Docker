@@ -2,7 +2,7 @@
 
 namespace Demo.API.ViewModels
 {
-    public class PersonViewModel
+    public class PersonViewModel : EntityBaseViewModel
     {
         public PersonViewModel()
             => this.Filiation = new PersonViewModel[2];

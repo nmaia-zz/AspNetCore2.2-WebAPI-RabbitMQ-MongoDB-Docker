@@ -35,15 +35,18 @@ namespace Demo.API.Controllers
 
         // GET api/researches/list-all
         [HttpGet, Route("list-all")]
-        public async Task<ActionResult<ResearchViewModel>> GetAllResearches()
+        public async Task<ActionResult<IEnumerable<ResearchViewModel>>> GetAllResearches()
         {
-            var response = await _researchRepository.GetAll();
-            return Ok(response); // http - 200
+            var allResearches = await _researchRepository.GetAll();
+
+            var model = _mapper.Map<IEnumerable<ResearchViewModel>>(allResearches);
+
+            return Ok(model); // http - 200
         }
 
         // POST api/researches/inset-one
         [HttpPost, Route("insert-one")]
-        public ActionResult<ResearchViewModel> Post([FromBody] ResearchViewModel model)
+        public ActionResult<ResearchViewModel> InsertOneResearch([FromBody] ResearchViewModel model)
         {
             var research = _mapper.Map<Research>(model);
 
