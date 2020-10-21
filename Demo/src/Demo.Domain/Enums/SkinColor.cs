@@ -1,37 +1,28 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Demo.Domain.Enums
 {
     public enum SkinColor
     {
         [Description("Albino")]
-        [BsonRepresentation(BsonType.String)]
-        ALBINO,
+        ALBINO = 1,
 
         [Description("White")]
-        [BsonRepresentation(BsonType.String)]
-        WHITE,
+        WHITE = 2,
 
         [Description("Yellow")]
-        [BsonRepresentation(BsonType.String)]
-        YELLOW,
+        YELLOW = 3,
 
         [Description("Olive")]
-        [BsonRepresentation(BsonType.String)]
-        OLIVE,
+        OLIVE = 4,
 
         [Description("Brown")]
-        [BsonRepresentation(BsonType.String)]
-        BROWN,
+        BROWN = 5,
 
         [Description("Black")]
-        [BsonRepresentation(BsonType.String)]
-        BLACK,
+        BLACK = 6,
 
         [Description("Burnt")]
-        [BsonRepresentation(BsonType.String)]
-        BURNT
+        BURNT = 7
     }
 }

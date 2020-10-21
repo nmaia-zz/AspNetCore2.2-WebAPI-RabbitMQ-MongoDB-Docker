@@ -7,6 +7,6 @@ namespace Demo.Contracts.Business
     public interface IRegionalReports
         : IReports<RegionalReport>
     {
-        Task<Dictionary<string, decimal>> GetPercentageByRegionReport(string region);
+        Task<RegionalReport> GetPercentageByRegionReport(string region);
     }
 }

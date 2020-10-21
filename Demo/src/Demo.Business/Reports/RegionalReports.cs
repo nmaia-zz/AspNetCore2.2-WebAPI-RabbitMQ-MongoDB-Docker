@@ -23,7 +23,7 @@ namespace Demo.Business.Reports
         /// </summary>
         /// <param name="researches"></param>
         /// <returns></returns>
-        public async Task<Dictionary<string, decimal>> GetPercentageByRegionReport(string region)
+        public async Task<RegionalReport> GetPercentageByRegionReport(string region)
         {
             var allResearches = await _researchRepository.GetAll();
 
@@ -37,18 +37,18 @@ namespace Demo.Business.Reports
                     .Select(group => 
                         new { 
                             Name = group.Key,
-                            Percentage = getPercentage(group.Count(s => s.Name == group.Key), totalPeopleFromRegion) 
+                            Percentage = GetPercentage(group.Count(s => s.Name == group.Key), totalPeopleFromRegion) 
                         });
 
-            var result = new Dictionary<string, decimal>();
+            var responseResult = new RegionalReport{ PercentagePerName = new Dictionary<string, decimal>() };
 
             foreach (var item in groupResult)
-                result.Add(item.Name, item.Percentage);
+                responseResult.PercentagePerName.Add(item.Name, item.Percentage);
 
-            return result;
+            return responseResult;
         }
 
-        public decimal getPercentage(int qttyPerName, int totalPeopleFromRegion)
+        public decimal GetPercentage(int qttyPerName, int totalPeopleFromRegion)
         {
             var result = (decimal)qttyPerName / (decimal)totalPeopleFromRegion;
             return Decimal.Round(result,2);

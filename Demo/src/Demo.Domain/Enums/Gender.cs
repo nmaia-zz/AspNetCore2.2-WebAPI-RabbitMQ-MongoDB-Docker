@@ -1,14 +1,13 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using System.ComponentModel;
 
 namespace Demo.Domain.Enums
 {
     public enum Gender
     {
-        [BsonRepresentation(BsonType.String)]
-        Male,
+        [Description("Male")]
+        MALE = 1,
 
-        [BsonRepresentation(BsonType.String)]
-        Female
+        [Description("Female")]
+        FEMALE = 2
     }
 }

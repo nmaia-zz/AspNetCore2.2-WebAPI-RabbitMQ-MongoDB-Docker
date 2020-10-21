@@ -1,33 +1,25 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Demo.Domain.Enums
 {
     public enum Schooling
     {
         [Description("PhD")]
-        [BsonRepresentation(BsonType.String)]
-        PHD,
+        PHD = 1,
 
         [Description("Masters")]
-        [BsonRepresentation(BsonType.String)]
-        MASTERS,       
+        MASTERS = 2,       
 
         [Description("Postgraduate")]
-        [BsonRepresentation(BsonType.String)]
-        POSTGRADUATE,
+        POSTGRADUATE = 3,
 
         [Description("University education")]
-        [BsonRepresentation(BsonType.String)]
-        UNIVERSITY_EDUCATION,
+        UNIVERSITY_EDUCATION = 4,
 
         [Description("Elementary school")]
-        [BsonRepresentation(BsonType.String)]
-        ELEMENTARY_SCHOOL,
+        ELEMENTARY_SCHOOL = 5,
 
         [Description("None")]
-        [BsonRepresentation(BsonType.String)]
-        NONE
+        NONE = 6
     }
 }

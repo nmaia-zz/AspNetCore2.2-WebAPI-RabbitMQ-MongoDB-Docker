@@ -1,29 +1,22 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Demo.Domain.Enums
 {
     public enum Region
     {
         [Description("Northeast Region")]
-        [BsonRepresentation(BsonType.String)]
-        NORTHEST_REGION,
+        NORTHEST_REGION = 1,
 
         [Description("North Region")]
-        [BsonRepresentation(BsonType.String)]
-        NORTH_REGION,
+        NORTH_REGION = 2,
 
         [Description("Midwest Region")]
-        [BsonRepresentation(BsonType.String)]
-        MIDWEST_REGION,
+        MIDWEST_REGION = 3,
 
         [Description("Southeast Region")]
-        [BsonRepresentation(BsonType.String)]
-        SOUTHEAST_REGION,
+        SOUTHEAST_REGION = 4,
 
         [Description("South Region")]
-        [BsonRepresentation(BsonType.String)]
-        SOUTH_REGION
+        SOUTH_REGION = 5
     }
 }

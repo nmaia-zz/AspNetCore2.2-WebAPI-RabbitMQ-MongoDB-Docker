@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Demo.Domain.Entities
+namespace Demo.API.ViewModels
 {
-    public class RegionalReport : Report
+    public class RegionalReportViewModel
     {
         public Dictionary<string, decimal> PercentagePerName { get; set; }
     }

@@ -55,11 +55,13 @@ namespace Demo.API.Controllers
 
         // GET api/researches/reports/get-percentage-by-region
         [HttpGet, Route("reports/get-percentage-by-region/{region}")]
-        public async Task<ActionResult<Dictionary<string, decimal>>> GetPercentageByRegion([FromRoute] string region)
+        public async Task<ActionResult<RegionalReportViewModel>> GetPercentageByRegion([FromRoute] string region)
         {
             var reportResult = await _regionalReports.GetPercentageByRegionReport(region);
 
-            return Ok(reportResult); // http - 200
+            var responseResult = _mapper.Map<RegionalReportViewModel>(reportResult);
+
+            return Ok(responseResult); // http - 200
         }
 
         // GET api/researches/reports/get-family-tree
