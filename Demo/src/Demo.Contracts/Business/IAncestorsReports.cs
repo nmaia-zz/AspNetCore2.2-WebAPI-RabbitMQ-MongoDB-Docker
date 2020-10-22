@@ -1,5 +1,4 @@
 ﻿using Demo.Domain.Entities;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Demo.Contracts.Business
@@ -8,6 +7,6 @@ namespace Demo.Contracts.Business
         : IReports<AncestorsReport>
     {
         AncestorsReport MountAncestorObjectToInsert(Research research);
-        Task<IEnumerable<AncestorsReport>> GetAncestorsReport();        
+        Task<AncestorsReport> GetAncestorsReport(string id);        
     }
 }

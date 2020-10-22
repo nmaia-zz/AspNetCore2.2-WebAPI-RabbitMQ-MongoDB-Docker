@@ -1,7 +1,7 @@
 ﻿using Demo.Business.Reports.Base;
 using Demo.Contracts.Business;
+using Demo.Contracts.Repository;
 using Demo.Domain.Entities;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Demo.Business.Reports
@@ -10,6 +10,11 @@ namespace Demo.Business.Reports
         : BaseReports<AncestorsReport>
         , IAncestorsReports
     {
+        private readonly IAncestorsRepository _ancestorsRepository;
+
+        public AncestorsReports(IAncestorsRepository ancestorsRepository)
+            => _ancestorsRepository = ancestorsRepository;
+
         public AncestorsReport MountAncestorObjectToInsert(Research research)
         {
             var ancestors = new string[research.Person.Filiation.Length];
@@ -31,9 +36,9 @@ namespace Demo.Business.Reports
             return ancestorObject;
         }
 
-        public async Task<IEnumerable<AncestorsReport>> GetAncestorsReport()
+        public async Task<AncestorsReport> GetAncestorsReport(string id)
         {
-            throw new System.NotImplementedException();
+            return await _ancestorsRepository.GetAncestorsById(id);
         }
     }
 }

@@ -4,18 +4,18 @@ using Demo.Contracts.Business;
 using Demo.Contracts.RabbitMQ;
 using Demo.Contracts.Repository;
 using Demo.Domain.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
     // TODO: Incluir o uso do polly para garantir a disponibilidade da API
-    // TODO: Configurar o JWT para o uso de claims no consumo dos endpoints
-    // TODO: Configurar o swagger
+    // TODO: Configurar o swagger + comentarios para documentacao apropriada da API
     // TODO: Criar convencions e configurar analyzers para as controllers da API
     // TODO: Criar tratamento de excecao
+    [EnableCors("AllowAnyOrigin")]
     [Route("api/researches")]
     [ApiController]
     public class ResearchController : ControllerBase
@@ -67,13 +67,15 @@ namespace Demo.API.Controllers
         public ActionResult<ResearchViewModel> InsertOneResearch([FromBody] ResearchViewModel model)
         {
             var research = _mapper.Map<Research>(model);
-            var ancestor = _ancestorsReports.MountAncestorObjectToInsert(research);
-            //var children = ;
-            //var parents = ;
+            var ancestors = _ancestorsReports.MountAncestorObjectToInsert(research);
+            var children = _childrenReports.MountChildrenObjectToInsert(research);
+            var parents = _parentsReports.MountParentsObjectToInsert(research);
 
             // TODO: Criar objeto para passar como parametro para o metodo abaixo
             _queueManagementResearch.Publish(research, "researches.queue", "researches.exchange", "researches.queue*");
-            _queueManagementAncestors.Publish(ancestor, "ancestors.queue", "ancestors.exchange", "ancestors.queue*");           
+            _queueManagementAncestors.Publish(ancestors, "ancestors.queue", "ancestors.exchange", "ancestors.queue*");
+            _queueManagementChildren.Publish(children, "children.queue", "children.exchange", "children.queue*");
+            _queueManagementParents.Publish(parents, "parents.queue", "parents.exchange", "parents.queue*");
 
             return Accepted(model); // http - 202
         }
@@ -90,29 +92,30 @@ namespace Demo.API.Controllers
         }
 
         // GET api/researches/reports/get-family-tree/{level}
-        [HttpGet, Route("reports/get-family-tree/{level}/for/{personName}")]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetFamilyTree(string level, string personName) // TODO: ajustar tipo de retorno
+        [HttpGet, Route("reports/get-family-tree/{level}/for/{personFullName}")]
+        public async Task<ActionResult<dynamic>> GetFamilyTree(string level, string personFullName) // TODO: ajustar tipo de retorno
         {
-            IEnumerable<AncestorsReportViewModel> responseAncestorsResult;
-            IEnumerable<ChildrenReportViewModel> responseChildrenResult;
-            IEnumerable<ParentsReportViewModel> responseParentsResult;
+            AncestorsReportViewModel responseAncestorsResult;
+            ChildrenReportViewModel responseChildrenResult;
+            ParentsReportViewModel responseParentsResult;
 
             // TODO: usar polimorfismo aqui ou criar uma rota para cada report
             switch (level)
             {
+                // TODO: Remover este case, vou disponibilizar apenas pais e filhos, este caso se aplicaria em caso de existência de avós
                 case "ancestors":
-                    var reportAncestorsResult = await _ancestorsReports.GetAncestorsReport();
-                    responseAncestorsResult = _mapper.Map<IEnumerable<AncestorsReportViewModel>>(reportAncestorsResult);
+                    var reportAncestorsResult = await _ancestorsReports.GetAncestorsReport(personFullName);
+                    responseAncestorsResult = _mapper.Map<AncestorsReportViewModel>(reportAncestorsResult);
                     return Ok(responseAncestorsResult);
 
                 case "children":
-                    var reportChildrenResult = await _childrenReports.GetChildrenReport();
-                    responseChildrenResult = _mapper.Map<IEnumerable<ChildrenReportViewModel>>(reportChildrenResult);
+                    var reportChildrenResult = await _childrenReports.GetChildrenReport(personFullName);
+                    responseChildrenResult = _mapper.Map<ChildrenReportViewModel>(reportChildrenResult);
                     return Ok(responseChildrenResult);
 
                 case "parents":
-                    var reportParentsResult = await _parentsReports.GetParentsReport();
-                    responseParentsResult = _mapper.Map<IEnumerable<ParentsReportViewModel>>(reportParentsResult);
+                    var reportParentsResult = await _parentsReports.GetParentsReport(personFullName);
+                    responseParentsResult = _mapper.Map<ParentsReportViewModel>(reportParentsResult);
                     return Ok(responseParentsResult);
 
                 default:

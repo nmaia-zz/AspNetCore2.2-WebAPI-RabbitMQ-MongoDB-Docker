@@ -29,16 +29,28 @@ namespace Demo.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Enable CORS
+            services.AddCors(options => {
+
+                options.AddPolicy("AllowAnyOrigin",
+                    builder => builder.AllowAnyOrigin());
+
+            });
+
             MongoDBPersistence.Setup();
 
             services.AddHostedService<ResearchConsumerHostedService>();
             services.AddHostedService<AncestorsConsumerHostedService>();
+            services.AddHostedService<ChildrenConsumerHostedService>();
+            services.AddHostedService<ParentsConsumerHostedService>();
 
             services.AddAutoMapper(typeof(Startup));
             
             services.AddSingleton<IMongoDBContext, MongoDBContext>();                        
             services.AddSingleton<IResearchRepository, ResearchRespository>();
             services.AddSingleton<IAncestorsRepository, AncestorsRepository>();
+            services.AddSingleton<IChildrenRepository, ChildrenRepository>();
+            services.AddSingleton<IParentsRepository, ParentsRepository>();
 
             services.AddScoped<ISetupConnection, SetupConnection>();
             services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();

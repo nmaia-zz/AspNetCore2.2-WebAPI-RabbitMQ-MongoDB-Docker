@@ -1,5 +1,4 @@
 ﻿using Demo.Domain.Entities;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Demo.Contracts.Business
@@ -7,6 +6,7 @@ namespace Demo.Contracts.Business
     public interface IChildrenReports
         : IReports<ChildrenReport>
     {
-        Task<IEnumerable<ChildrenReport>> GetChildrenReport();
+        ChildrenReport MountChildrenObjectToInsert(Research research);
+        Task<ChildrenReport> GetChildrenReport(string id);
     }
 }
