@@ -21,16 +21,26 @@ namespace Demo.API.Controllers
         private readonly IQueueManagementResearch _queueManagementResearch;
         private readonly IRepositoryResearch _researchRepository;
         private readonly IMapper _mapper;
+        
+        // TODO: Criar uma nova controller apenas para os reports
         private readonly IRegionalReports _regionalReports;
-        private readonly IFamilyTreeReports _familyTreeReports;
+        private readonly IAncestorsReports _ancestorsReports;
+        private readonly IChildrenReports _childrenReports;
+        private readonly IParentsReports _parentsReports;
 
-        public ResearchController(IRepositoryResearch researchRepository, IQueueManagementResearch queueMessageResearch, IMapper mapper, IRegionalReports regionalReports, IFamilyTreeReports familyTreeReports)
+        public ResearchController(IRepositoryResearch researchRepository
+            , IQueueManagementResearch queueMessageResearch
+            , IMapper mapper
+            , IRegionalReports regionalReports
+            , IAncestorsReports familyTreeReports, IChildrenReports childrenReports, IParentsReports parentsReports)
         {
             _researchRepository = researchRepository;
             _queueManagementResearch = queueMessageResearch;
             _mapper = mapper;
             _regionalReports = regionalReports;
-            _familyTreeReports = familyTreeReports;
+            _ancestorsReports = familyTreeReports;
+            _childrenReports = childrenReports;
+            _parentsReports = parentsReports;
         }
 
         // GET api/researches/list-all
@@ -56,7 +66,7 @@ namespace Demo.API.Controllers
             return Accepted(model); // http - 202
         }
 
-        // GET api/researches/reports/get-percentage-by-region
+        // GET api/researches/reports/get-percentage-by-region/{region}
         [HttpGet, Route("reports/get-percentage-by-region/{region}")]
         public async Task<ActionResult<RegionalReportViewModel>> GetPercentageByRegion([FromRoute] string region)
         {
@@ -67,13 +77,35 @@ namespace Demo.API.Controllers
             return Ok(responseResult); // http - 200
         }
 
-        // GET api/researches/reports/get-family-tree
-        [HttpGet, Route("reports/get-family-tree")]
-        public async Task<ActionResult<double>> GetFamilyTree()
+        // GET api/researches/reports/get-family-tree/{level}
+        [HttpGet, Route("reports/get-family-tree-at-level/{level}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetFamilyTree(string level) // TODO: ajustar tipo de retorno
         {
-            // TODO: Implementar
+            IEnumerable<AncestorsReportViewModel> responseAncestorsResult;
+            IEnumerable<ChildrenReportViewModel> responseChildrenResult;
+            IEnumerable<ParentsReportViewModel> responseParentsResult;
 
-            return Ok(); // http - 200
+            // TODO: usar polimorfismo aqui ou criar uma rota para cada report
+            switch (level)
+            {
+                case "ancestors":
+                    var reportAncestorsResult = await _ancestorsReports.GetAncestorsReport();
+                    responseAncestorsResult = _mapper.Map<IEnumerable<AncestorsReportViewModel>>(reportAncestorsResult);
+                    return Ok(responseAncestorsResult);
+
+                case "children":
+                    var reportChildrenResult = await _childrenReports.GetChildrenReport();
+                    responseChildrenResult = _mapper.Map<IEnumerable<ChildrenReportViewModel>>(reportChildrenResult);
+                    return Ok(responseChildrenResult);
+
+                case "parents":
+                    var reportParentsResult = await _parentsReports.GetParentsReport();
+                    responseParentsResult = _mapper.Map<IEnumerable<ParentsReportViewModel>>(reportParentsResult);
+                    return Ok(responseParentsResult);
+
+                default:
+                    return BadRequest(); // http - 400
+            }
         }
 
         // GET api/researches/reports/get-filtered-report

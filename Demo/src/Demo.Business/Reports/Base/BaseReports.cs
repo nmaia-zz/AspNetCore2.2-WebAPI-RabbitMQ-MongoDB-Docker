@@ -10,7 +10,7 @@ namespace Demo.Business.Reports.Base
         where TEntity : class
 
     {
-        public async Task<IEnumerable<TEntity>> FilteredReport(string args)
+        public virtual async Task<IEnumerable<TEntity>> FilteredReport(string args)
         {
             throw new NotImplementedException();
         }

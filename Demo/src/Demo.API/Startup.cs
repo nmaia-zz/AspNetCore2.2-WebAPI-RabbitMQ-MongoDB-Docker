@@ -40,7 +40,9 @@ namespace Demo.API
             services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
             services.AddScoped<ISetupConnection, SetupConnection>();
             services.AddScoped<IRegionalReports, RegionalReports>();
-            services.AddScoped<IFamilyTreeReports, FamilyTreeReports>();
+            services.AddScoped<IAncestorsReports, AncestorsReports>();
+            services.AddScoped<IChildrenReports, ChildrenReports>();
+            services.AddScoped<IParentsReports, ParentsReports>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
         }

@@ -11,6 +11,10 @@ namespace Demo.Infra.Mappings
             ResearchMap.ConfigureMap();
             PersonMap.ConfigureMap();
 
+            AncestorsReportMap.ConfigureMap();
+            ChildrenReportMap.ConfigureMap();
+            ParentsReportMap.ConfigureMap();
+
             var pack = new ConventionPack
             {
                 new IgnoreExtraElementsConvention(true),

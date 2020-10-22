@@ -12,14 +12,9 @@ namespace Demo.API.Configuration
             CreateMap<Research, ResearchViewModel>().ReverseMap();
             CreateMap<Person, PersonViewModel>().ReverseMap();
             CreateMap<RegionalReport, RegionalReportViewModel>().ReverseMap();
-
-            // exemplo de mapeamenteo de propriedades complexas (via relacionamento entre entidades)
-            /*
-             
-            CreateMap<Produto, ProdutoViewModel>()
-                .ForMember(dest => dest.NomeFornecedor, opt => opt.MapFrom(src => src.Fornecedor.Nome));             
-
-             */
+            CreateMap<AncestorsReport, AncestorsReportViewModel>().ReverseMap();
+            CreateMap<ChildrenReport, ChildrenReportViewModel>().ReverseMap();
+            CreateMap<ParentsReport, ParentsReportViewModel>().ReverseMap();
         }
     }
 }
