@@ -13,9 +13,9 @@ namespace Demo.Business.Reports
         : BaseReports<RegionalReport>
         , IRegionalReports
     {
-        private readonly IRepositoryResearch _researchRepository;
+        private readonly IResearchRepository _researchRepository;
 
-        public RegionalReports(IRepositoryResearch researchRepository)
+        public RegionalReports(IResearchRepository researchRepository)
             => _researchRepository = researchRepository;
 
         /// <summary>

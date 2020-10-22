@@ -12,8 +12,8 @@ namespace Demo.Infra.Mappings
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);
                 map.MapIdMember(x => x.Id);
-                map.MapIdMember(x => x.Ancestors);
-                map.MapIdMember(x => x.Parent);
+                map.MapMember(x => x.Ancestors);
+                map.MapMember(x => x.Parent);
             });
         }
     }

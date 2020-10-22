@@ -4,6 +4,7 @@ namespace Demo.Domain.Entities
 {
     public class AncestorsReport : Report
     {
+        [BsonId]
         [BsonElement("_id")]
         public string Id { get; set; }
 

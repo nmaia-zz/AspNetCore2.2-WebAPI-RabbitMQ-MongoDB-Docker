@@ -5,11 +5,11 @@ using Demo.Infra.Repository.Base;
 
 namespace Demo.Infra.Repository
 {
-    public class RespositoryResearch 
-        : BaseRepository<Research>
-        , IRepositoryResearch
+    public class AncestorsRepository
+        : BaseRepository<AncestorsReport>
+        , IAncestorsRepository
     {
-        public RespositoryResearch(IMongoDBContext context)
+        public AncestorsRepository(IMongoDBContext context)
             : base(context)
         {
 

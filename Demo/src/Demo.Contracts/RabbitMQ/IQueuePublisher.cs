@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Demo.Contracts.RabbitMQ
+﻿namespace Demo.Contracts.RabbitMQ
 {
     public interface IQueuePublisher<TEntity> 
         where TEntity : class

@@ -6,6 +6,7 @@ using Demo.Contracts.Repository;
 using Demo.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
@@ -14,12 +15,16 @@ namespace Demo.API.Controllers
     // TODO: Configurar o JWT para o uso de claims no consumo dos endpoints
     // TODO: Configurar o swagger
     // TODO: Criar convencions e configurar analyzers para as controllers da API
+    // TODO: Criar tratamento de excecao
     [Route("api/researches")]
     [ApiController]
     public class ResearchController : ControllerBase
     {
         private readonly IQueueManagementResearch _queueManagementResearch;
-        private readonly IRepositoryResearch _researchRepository;
+        private readonly IQueueManagementAncestorReport _queueManagementAncestors;
+        private readonly IQueueManagementChildrenReport _queueManagementChildren;
+        private readonly IQueueManagementParentsReport _queueManagementParents;
+        private readonly IResearchRepository _researchRepository;
         private readonly IMapper _mapper;
         
         // TODO: Criar uma nova controller apenas para os reports
@@ -28,11 +33,11 @@ namespace Demo.API.Controllers
         private readonly IChildrenReports _childrenReports;
         private readonly IParentsReports _parentsReports;
 
-        public ResearchController(IRepositoryResearch researchRepository
+        public ResearchController(IResearchRepository researchRepository
             , IQueueManagementResearch queueMessageResearch
             , IMapper mapper
             , IRegionalReports regionalReports
-            , IAncestorsReports familyTreeReports, IChildrenReports childrenReports, IParentsReports parentsReports)
+            , IAncestorsReports familyTreeReports, IChildrenReports childrenReports, IParentsReports parentsReports, IQueueManagementAncestorReport queueManagementAncestors, IQueueManagementChildrenReport queueManagementChildren, IQueueManagementParentsReport queueManagementParents)
         {
             _researchRepository = researchRepository;
             _queueManagementResearch = queueMessageResearch;
@@ -41,6 +46,9 @@ namespace Demo.API.Controllers
             _ancestorsReports = familyTreeReports;
             _childrenReports = childrenReports;
             _parentsReports = parentsReports;
+            _queueManagementAncestors = queueManagementAncestors;
+            _queueManagementChildren = queueManagementChildren;
+            _queueManagementParents = queueManagementParents;
         }
 
         // GET api/researches/list-all
@@ -59,9 +67,13 @@ namespace Demo.API.Controllers
         public ActionResult<ResearchViewModel> InsertOneResearch([FromBody] ResearchViewModel model)
         {
             var research = _mapper.Map<Research>(model);
+            var ancestor = _ancestorsReports.MountAncestorObjectToInsert(research);
+            //var children = ;
+            //var parents = ;
 
             // TODO: Criar objeto para passar como parametro para o metodo abaixo
-            _queueManagementResearch.Publish(research, "demo.queue", "demo.exchange", "demo.queue*");
+            _queueManagementResearch.Publish(research, "researches.queue", "researches.exchange", "researches.queue*");
+            _queueManagementAncestors.Publish(ancestor, "ancestors.queue", "ancestors.exchange", "ancestors.queue*");           
 
             return Accepted(model); // http - 202
         }
@@ -78,8 +90,8 @@ namespace Demo.API.Controllers
         }
 
         // GET api/researches/reports/get-family-tree/{level}
-        [HttpGet, Route("reports/get-family-tree-at-level/{level}")]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetFamilyTree(string level) // TODO: ajustar tipo de retorno
+        [HttpGet, Route("reports/get-family-tree/{level}/for/{personName}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetFamilyTree(string level, string personName) // TODO: ajustar tipo de retorno
         {
             IEnumerable<AncestorsReportViewModel> responseAncestorsResult;
             IEnumerable<ChildrenReportViewModel> responseChildrenResult;

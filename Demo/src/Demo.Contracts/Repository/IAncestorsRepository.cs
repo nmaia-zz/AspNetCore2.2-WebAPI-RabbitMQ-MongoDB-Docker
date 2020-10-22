@@ -2,8 +2,9 @@
 
 namespace Demo.Contracts.Repository
 {
-    public interface IRepositoryResearch 
-        : IRepository<Research>
+    public interface IAncestorsRepository
+        : IRepository<AncestorsReport>
     {
+
     }
 }

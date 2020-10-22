@@ -10,18 +10,19 @@ using System.Threading.Tasks;
 
 namespace Demo.Infra.RabbitMQ.HostedServices
 {
-    public class ConsumerHostedService : BackgroundService
+    // TODO: Verificar o ponto para implementar o BasicNack (retornar com a msg para a fila)
+    public class AncestorsConsumerHostedService : BackgroundService
     {
         private readonly ILogger _logger;
         private IConnection _connection;
         private IModel _channel;
-        private readonly IRepositoryResearch _repositoryResearch;
+        private readonly IAncestorsRepository _ancestorsResearch;
 
-        public ConsumerHostedService(ILoggerFactory loggerFactory, IRepositoryResearch repositoryResearch)
+        public AncestorsConsumerHostedService(ILoggerFactory loggerFactory, IAncestorsRepository ancestorsResearch)
         {
-            this._logger = loggerFactory.CreateLogger<ConsumerHostedService>();
+            this._logger = loggerFactory.CreateLogger<ResearchConsumerHostedService>();
             InitRabbitMQ();
-            _repositoryResearch = repositoryResearch;
+            _ancestorsResearch = ancestorsResearch;
         }
 
         private void InitRabbitMQ()
@@ -40,9 +41,9 @@ namespace Demo.Infra.RabbitMQ.HostedServices
             // create channel
             _channel = _connection.CreateModel();
 
-            _channel.ExchangeDeclare("demo.exchange", ExchangeType.Topic);
-            _channel.QueueDeclare("demo.queue", false, false, false, null);
-            _channel.QueueBind("demo.queue", "demo.exchange", "demo.queue*", null);
+            _channel.ExchangeDeclare("ancestors.exchange", ExchangeType.Topic);
+            _channel.QueueDeclare("ancestors.queue", false, false, false, null);
+            _channel.QueueBind("ancestors.queue", "ancestors.exchange", "ancestors.queue*", null);
             _channel.BasicQos(0, 1, false);
 
             _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
@@ -69,7 +70,7 @@ namespace Demo.Infra.RabbitMQ.HostedServices
             consumer.Unregistered += OnConsumerUnregistered;
             consumer.ConsumerCancelled += OnConsumerConsumerCancelled;
 
-            _channel.BasicConsume("demo.queue", false, consumer);
+            _channel.BasicConsume("ancestors.queue", false, consumer);
             return Task.CompletedTask;
         }
 
@@ -77,8 +78,8 @@ namespace Demo.Infra.RabbitMQ.HostedServices
         {
             _logger.LogInformation($"consumer received {content}");
 
-            var research = JsonConvert.DeserializeObject<Research>(content);
-            _repositoryResearch.Add(research);
+            var research = JsonConvert.DeserializeObject<AncestorsReport>(content);
+            _ancestorsResearch.Add(research);
         }
 
         private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)

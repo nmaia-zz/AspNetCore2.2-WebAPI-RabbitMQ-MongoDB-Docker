@@ -7,6 +7,7 @@ namespace Demo.Contracts.Business
     public interface IAncestorsReports
         : IReports<AncestorsReport>
     {
-        Task<IEnumerable<AncestorsReport>> GetAncestorsReport();
+        AncestorsReport MountAncestorObjectToInsert(Research research);
+        Task<IEnumerable<AncestorsReport>> GetAncestorsReport();        
     }
 }

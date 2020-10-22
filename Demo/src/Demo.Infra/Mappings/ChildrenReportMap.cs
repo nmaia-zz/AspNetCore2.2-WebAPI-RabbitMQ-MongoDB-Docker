@@ -12,7 +12,7 @@ namespace Demo.Infra.Mappings
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);
                 map.MapIdMember(x => x.Id);
-                map.MapIdMember(x => x.Children);
+                map.MapMember(x => x.Children);
             });
         }
     }

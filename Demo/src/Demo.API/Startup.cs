@@ -31,14 +31,21 @@ namespace Demo.API
         {
             MongoDBPersistence.Setup();
 
-            services.AddHostedService<ConsumerHostedService>();
+            services.AddHostedService<ResearchConsumerHostedService>();
+            services.AddHostedService<AncestorsConsumerHostedService>();
 
             services.AddAutoMapper(typeof(Startup));
             
             services.AddSingleton<IMongoDBContext, MongoDBContext>();                        
-            services.AddSingleton<IRepositoryResearch, RespositoryResearch>();            
-            services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
+            services.AddSingleton<IResearchRepository, ResearchRespository>();
+            services.AddSingleton<IAncestorsRepository, AncestorsRepository>();
+
             services.AddScoped<ISetupConnection, SetupConnection>();
+            services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
+            services.AddScoped<IQueueManagementAncestorReport, QueueManagementAncestors>();
+            services.AddScoped<IQueueManagementChildrenReport, QueueManagementChildren>();
+            services.AddScoped<IQueueManagementParentsReport, QueueManagementParents>();
+            
             services.AddScoped<IRegionalReports, RegionalReports>();
             services.AddScoped<IAncestorsReports, AncestorsReports>();
             services.AddScoped<IChildrenReports, ChildrenReports>();
