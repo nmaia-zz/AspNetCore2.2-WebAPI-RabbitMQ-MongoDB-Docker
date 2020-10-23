@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Demo.Infra.Repository
 {
-    public class AncestorsRepository
+    public class AncestorsReportsRepository
         : BaseRepository<AncestorsReport>
-        , IAncestorsRepository
+        , IAncestorsReportsRepository
     {
-        public AncestorsRepository(IMongoDBContext context)
+        public AncestorsReportsRepository(IMongoDBContext context)
             : base(context)
         {
 

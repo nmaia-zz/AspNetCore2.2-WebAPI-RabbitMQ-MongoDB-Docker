@@ -48,9 +48,9 @@ namespace Demo.API
             
             services.AddSingleton<IMongoDBContext, MongoDBContext>();                        
             services.AddSingleton<IResearchRepository, ResearchRespository>();
-            services.AddSingleton<IAncestorsRepository, AncestorsRepository>();
-            services.AddSingleton<IChildrenRepository, ChildrenRepository>();
-            services.AddSingleton<IParentsRepository, ParentsRepository>();
+            services.AddSingleton<IAncestorsReportsRepository, AncestorsReportsRepository>();
+            services.AddSingleton<IChildrenReportsRepository, ChildrenReportsRepository>();
+            services.AddSingleton<IParentsReportsRepository, ParentsReportsRepository>();
 
             services.AddScoped<ISetupConnection, SetupConnection>();
             services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();

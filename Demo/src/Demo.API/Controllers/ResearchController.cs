@@ -81,7 +81,7 @@ namespace Demo.API.Controllers
         }
 
         // GET api/researches/reports/get-percentage-by-region/{region}
-        [HttpGet, Route("reports/get-percentage-by-region/{region}")]
+        [HttpGet, Route("reports/percentage-by-region/{region}")]
         public async Task<ActionResult<RegionalReportViewModel>> GetPercentageByRegion([FromRoute] string region)
         {
             var reportResult = await _regionalReports.GetPercentageByRegionReport(region);
@@ -92,7 +92,7 @@ namespace Demo.API.Controllers
         }
 
         // GET api/researches/reports/get-family-tree/{level}
-        [HttpGet, Route("reports/get-family-tree/{level}/for/{personFullName}")]
+        [HttpGet, Route("reports/family-tree/{level}/for/{personFullName}")]
         public async Task<ActionResult<dynamic>> GetFamilyTree(string level, string personFullName) // TODO: ajustar tipo de retorno
         {
             AncestorsReportViewModel responseAncestorsResult;
@@ -124,12 +124,21 @@ namespace Demo.API.Controllers
         }
 
         // GET api/researches/reports/get-filtered-report
-        [HttpGet, Route("reports/get-filtered-report/{filter}")]
-        public async Task<ActionResult<double>> GetFilteredReport([FromQuery] string filter)
+        [HttpGet, Route("reports/filtered-report")]
+        public async Task<ActionResult<IEnumerable<ResearchViewModel>>> GetFilteredReport([FromBody] FilterObjectViewModel modelFilter)
         {
-            // TODO: Implementar
+            var filter = new Dictionary<string, string>
+            {
+                { "Region", modelFilter.Region },
+                { "Name", modelFilter.Name },
+                { "SkinColor", modelFilter.SkinColor },
+                { "Schooling", modelFilter.Schooling }
+            };
 
-            return Ok(); // http - 200
+            var repositoryResponse = await _researchRepository.GetFilteredResearches(filter);
+            var responseResult = _mapper.Map<IEnumerable<ResearchViewModel>>(repositoryResponse);
+
+            return Ok(responseResult); // http - 200
         }
     }
 }

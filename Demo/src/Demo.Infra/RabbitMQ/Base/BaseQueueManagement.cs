@@ -17,7 +17,7 @@ namespace Demo.Infra.RabbitMQ.Base
             _connectionFactory = connectionFactory;
         }
 
-        public void Publish(TEntity obj, string queue, string exchange, string routingKey)
+        public virtual void Publish(TEntity obj, string queue, string exchange, string routingKey)
         {
             try
             {

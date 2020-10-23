@@ -10,9 +10,9 @@ namespace Demo.Business.Reports
         : BaseReports<AncestorsReport>
         , IAncestorsReports
     {
-        private readonly IAncestorsRepository _ancestorsRepository;
+        private readonly IAncestorsReportsRepository _ancestorsRepository;
 
-        public AncestorsReports(IAncestorsRepository ancestorsRepository)
+        public AncestorsReports(IAncestorsReportsRepository ancestorsRepository)
             => _ancestorsRepository = ancestorsRepository;
 
         public AncestorsReport MountAncestorObjectToInsert(Research research)

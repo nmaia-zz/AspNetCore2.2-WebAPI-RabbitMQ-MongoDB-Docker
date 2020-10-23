@@ -16,9 +16,9 @@ namespace Demo.Infra.RabbitMQ.HostedServices
         private readonly ILogger _logger;
         private IConnection _connection;
         private IModel _channel;
-        private readonly IAncestorsRepository _ancestorsRepository;
+        private readonly IAncestorsReportsRepository _ancestorsRepository;
 
-        public AncestorsConsumerHostedService(ILoggerFactory loggerFactory, IAncestorsRepository ancestorsRepository)
+        public AncestorsConsumerHostedService(ILoggerFactory loggerFactory, IAncestorsReportsRepository ancestorsRepository)
         {
             this._logger = loggerFactory.CreateLogger<AncestorsConsumerHostedService>();
             InitRabbitMQ();

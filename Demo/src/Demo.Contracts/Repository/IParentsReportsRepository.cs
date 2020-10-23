@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Contracts.Repository
 {
-    public interface IParentsRepository
+    public interface IParentsReportsRepository
         : IRepository<ParentsReport>
     {
         Task<ParentsReport> GetParentsById(string id);

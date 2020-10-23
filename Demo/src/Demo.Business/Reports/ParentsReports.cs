@@ -10,9 +10,9 @@ namespace Demo.Business.Reports
         : BaseReports<ParentsReport>
         , IParentsReports
     {
-        private readonly IParentsRepository _parentsRepository;
+        private readonly IParentsReportsRepository _parentsRepository;
 
-        public ParentsReports(IParentsRepository parentsRepository)
+        public ParentsReports(IParentsReportsRepository parentsRepository)
             => _parentsRepository = parentsRepository;
 
         public ParentsReport MountParentsObjectToInsert(Research research)

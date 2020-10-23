@@ -11,9 +11,9 @@ namespace Demo.Business.Reports
         : BaseReports<ChildrenReport>
         , IChildrenReports
     {
-        private readonly IChildrenRepository _childrenRepository;
+        private readonly IChildrenReportsRepository _childrenRepository;
 
-        public ChildrenReports(IChildrenRepository childrenRepository)
+        public ChildrenReports(IChildrenReportsRepository childrenRepository)
             => _childrenRepository = childrenRepository;
 
         public ChildrenReport MountChildrenObjectToInsert(Research research)
