@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
-    // TODO: Incluir o uso do polly para garantir a disponibilidade da API
+    // TODO: Incluir o uso do polly para garantir a resiliencia da API
     // TODO: Configurar o swagger + comentarios para documentacao apropriada da API
     // TODO: Criar convencions e configurar analyzers para as controllers da API
     // TODO: Criar tratamento de excecao
