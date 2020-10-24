@@ -8,6 +8,9 @@ on:
 
 jobs:
   build:
+    env: 
+      UNIT_TESTS_PROJECT_PATH: ./Demo/tests/Demo.Tests/Demo.UnitTests.csproj
+      WEBAPI_SOLUTION_PATH: ./Demo/Demo.sln
 
     runs-on: ubuntu-latest
 
@@ -17,12 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2
+        
+    - name: Executing Tests - Unit and Integration
+      run: dotnet test ${{ env.UNIT_TESTS_PROJECT_PATH }} --verbosity minimal        
+        
     - name: Install dependencies
-      run: dotnet restore Demo.sln
-      working-directory: ./Demo
-    - name: Build
-      run: dotnet build Demo.sln --configuration Release --no-restore
-      working-directory: ./Demo
-    - name: Test
-      run: dotnet test Demo.Tests.sln --no-restore --verbosity normal
-      working-directory: ./Demo/tests/Demo.Tests
+      run: dotnet restore ${{ env.WEBAPI_SOLUTION_PATH }}
+      
+    - name: Building Solution
+      run: dotnet build ${{ env.WEBAPI_SOLUTION_PATH }} --configuration Release
