@@ -10,9 +10,9 @@ namespace Demo.UnitTests
         [Fact]
         public void Test1()
         {
-            var number = 123;
+            var number = 1234;
 
-            number.Should().Be(123, "it's number!");
+            number.Should().Be(123, "it's a number!");
         }
     }
 }
