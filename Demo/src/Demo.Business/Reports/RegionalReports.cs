@@ -33,11 +33,11 @@ namespace Demo.Business.Reports
 
             var totalPeopleFromRegion = peopleFromRegion.Count();
 
-            var groupResult = peopleFromRegion.GroupBy(x => x.Name)
+            var groupResult = peopleFromRegion.GroupBy(x => x.FirstName)
                     .Select(group => 
                         new { 
                             Name = group.Key,
-                            Percentage = GetPercentage(group.Count(s => s.Name == group.Key), totalPeopleFromRegion) 
+                            Percentage = GetPercentage(group.Count(s => s.FirstName == group.Key), totalPeopleFromRegion) 
                         });
 
             var responseResult = new RegionalReport{ PercentagePerName = new Dictionary<string, decimal>() };

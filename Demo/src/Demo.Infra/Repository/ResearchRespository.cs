@@ -33,16 +33,25 @@ namespace Demo.Infra.Repository
                 : string.Empty;
 
             if (!string.IsNullOrEmpty(region))
-                predicate = predicate.Or(r => r.Region == (Region)Enum.Parse(typeof(Region), region));
+                predicate = predicate.And(r => r.Region == (Region)Enum.Parse(typeof(Region), region.ToUpper()));
 
             // -------------------- name
 
-            var name = (filter.Where(x => x.Key == "Name").Select(y => y.Value).FirstOrDefault() != string.Empty)
-                ? filter.Where(x => x.Key == "Name").Select(y => y.Value).FirstOrDefault()
+            var firstName = (filter.Where(x => x.Key == "FirstName").Select(y => y.Value).FirstOrDefault() != string.Empty)
+                ? filter.Where(x => x.Key == "FirstName").Select(y => y.Value).FirstOrDefault()
                 : string.Empty;
 
-            if (!string.IsNullOrEmpty(name))
-                predicate = predicate.Or(r => r.Person.Name.ToLower().Contains(name.ToLower()));
+            if (!string.IsNullOrEmpty(firstName))
+                predicate = predicate.And(r => r.Person.FirstName.ToLower().Contains(firstName.ToLower()));
+
+            // -------------------- gender
+
+            var gender = (filter.Where(x => x.Key == "Gender").Select(y => y.Value).FirstOrDefault() != string.Empty)
+                ? filter.Where(x => x.Key == "Gender").Select(y => y.Value).FirstOrDefault()
+                : string.Empty;
+
+            if (!string.IsNullOrEmpty(gender))
+                predicate = predicate.And(r => r.Person.Gender == (Gender)Enum.Parse(typeof(Gender), gender.ToUpper()));
 
             // -------------------- skinColor
 
@@ -51,7 +60,7 @@ namespace Demo.Infra.Repository
                 : string.Empty;
 
             if (!string.IsNullOrEmpty(skinColor))
-                predicate = predicate.Or(r => r.Person.SkinColor == (SkinColor)Enum.Parse(typeof(SkinColor), skinColor));
+                predicate = predicate.And(r => r.Person.SkinColor == (SkinColor)Enum.Parse(typeof(SkinColor), skinColor.ToUpper()));
 
             // -------------------- schooling
 
@@ -60,7 +69,7 @@ namespace Demo.Infra.Repository
                 : string.Empty;
 
             if (!string.IsNullOrEmpty(schooling))
-                predicate = predicate.Or(r => r.Person.Schooling == (Schooling)Enum.Parse(typeof(Schooling), schooling));
+                predicate = predicate.And(r => r.Person.Schooling == (Schooling)Enum.Parse(typeof(Schooling), schooling.ToUpper()));
 
             var queryResult = await Task.Run(() => {
                 
@@ -69,6 +78,41 @@ namespace Demo.Infra.Repository
             });
 
             return queryResult;
+        }
+
+        public async Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(Dictionary<string, string> filter)
+        {
+            var nonGroupedResponse = (await GetFilteredResearches(filter)).ToList();
+
+            var groupedResponse = nonGroupedResponse.AsEnumerable()
+                    .Select(x => new {
+
+                        Region = x.Region.ToString(),
+                        FirstName = x.Person.FirstName,
+                        Gender = x.Person.Gender.ToString(),                        
+                        SkinColor = x.Person.SkinColor.ToString(),                        
+                        Schooling = x.Person.Schooling.ToString(),                       
+
+                    }).GroupBy(g => new {
+
+                        g.Region,
+                        g.FirstName,
+                        g.Gender,
+                        g.Schooling,
+                        g.SkinColor
+
+                    }).Select(s => new FilteredResearchGrouped {
+
+                        Region = s.Key.Region,
+                        FirstName = s.Key.FirstName,
+                        Gender = s.Key.Gender,
+                        SkinColor = s.Key.SkinColor,
+                        Schooling = s.Key.Schooling,
+                        Quantity = Convert.ToInt16(s.Count()).ToString()
+
+                    });
+
+            return groupedResponse;
         }
     }
 }

@@ -8,5 +8,6 @@ namespace Demo.Contracts.Repository
         : IRepository<Research>
     {
         Task<IEnumerable<Research>> GetFilteredResearches(Dictionary<string,string> filter);
+        Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(Dictionary<string, string> filter);
     }
 }

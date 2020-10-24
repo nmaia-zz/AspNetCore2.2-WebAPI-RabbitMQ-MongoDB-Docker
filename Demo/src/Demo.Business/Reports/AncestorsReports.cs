@@ -22,15 +22,15 @@ namespace Demo.Business.Reports
 
             foreach (var filiation in research.Person.Filiation)
             {
-                ancestors[index] = string.Join(" ", filiation.Name, filiation.LastName);
+                ancestors[index] = string.Join(" ", filiation.FirstName, filiation.LastName);
                 index++;
             }
 
             var ancestorObject = new AncestorsReport()
             {
-                Id = string.Join(" ", research.Person.Name, research.Person.LastName),
+                Id = string.Join(" ", research.Person.FirstName, research.Person.LastName),
                 Ancestors = ancestors,
-                Parent = string.Join(", ", research.Person.Filiation[0].Name, research.Person.Filiation[1].Name)
+                Parent = string.Join(", ", research.Person.Filiation[0].FirstName, research.Person.Filiation[1].FirstName)
             };
             
             return ancestorObject;

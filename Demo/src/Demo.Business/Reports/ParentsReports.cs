@@ -22,13 +22,13 @@ namespace Demo.Business.Reports
 
             foreach (var parent in research.Person.Filiation)
             {
-                parents[index] = string.Join(" ", parent.Name, parent.LastName);
+                parents[index] = string.Join(" ", parent.FirstName, parent.LastName);
                 index++;
             }
 
             var parentsObject = new ParentsReport()
             {
-                Id = string.Join(" ", research.Person.Name, research.Person.LastName),
+                Id = string.Join(" ", research.Person.FirstName, research.Person.LastName),
                 Parent = string.Join(", ", parents[0], parents[1])
             };
 

@@ -11,7 +11,7 @@ namespace Demo.Infra.Mappings
 
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);
-                map.MapMember(x => x.Name);
+                map.MapMember(x => x.FirstName);
                 map.MapMember(x => x.LastName);
                 map.MapMember(x => x.Gender);
                 map.MapMember(x => x.SkinColor);

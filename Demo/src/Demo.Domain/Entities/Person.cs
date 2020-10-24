@@ -10,7 +10,7 @@ namespace Demo.Domain.Entities
         public Person()
             => this.Filiation = new Person[2];
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         
         public string LastName { get; set; }
 

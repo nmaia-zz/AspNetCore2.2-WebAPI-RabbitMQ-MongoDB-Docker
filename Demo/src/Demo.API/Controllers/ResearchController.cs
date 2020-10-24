@@ -99,7 +99,6 @@ namespace Demo.API.Controllers
             ChildrenReportViewModel responseChildrenResult;
             ParentsReportViewModel responseParentsResult;
 
-            // TODO: usar polimorfismo aqui ou criar uma rota para cada report
             switch (level)
             {
                 // TODO: Remover este case, vou disponibilizar apenas pais e filhos, este caso se aplicaria em caso de existência de avós
@@ -125,20 +124,29 @@ namespace Demo.API.Controllers
 
         // GET api/researches/reports/get-filtered-report
         [HttpGet, Route("reports/filtered-report")]
-        public async Task<ActionResult<IEnumerable<ResearchViewModel>>> GetFilteredReport([FromBody] FilterObjectViewModel modelFilter)
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetFilteredReport([FromBody] FilterObjectViewModel modelFilter)
         {
             var filter = new Dictionary<string, string>
             {
                 { "Region", modelFilter.Region },
-                { "Name", modelFilter.Name },
+                { "FirstName", modelFilter.FirstName },
+                { "Gender", modelFilter.Gender },
                 { "SkinColor", modelFilter.SkinColor },
                 { "Schooling", modelFilter.Schooling }
-            };
+            };            
 
-            var repositoryResponse = await _researchRepository.GetFilteredResearches(filter);
-            var responseResult = _mapper.Map<IEnumerable<ResearchViewModel>>(repositoryResponse);
-
-            return Ok(responseResult); // http - 200
+            if (!modelFilter.IsGrouped)
+            {
+                var repositoryResponse = await _researchRepository.GetFilteredResearches(filter);
+                var responseResult = _mapper.Map<IEnumerable<ResearchViewModel>>(repositoryResponse);
+                return Ok(responseResult); // http - 200
+            }
+            else
+            {
+                var repositoryResponse = await _researchRepository.GetFilteredResearchesGrouped(filter);
+                var responseResult = _mapper.Map<IEnumerable<FilteredResearchGroupedViewModel>>(repositoryResponse);
+                return Ok(responseResult); // http - 200
+            }             
         }
     }
 }
