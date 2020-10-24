@@ -24,4 +24,4 @@ jobs:
       run: dotnet build Demo.sln --configuration Release --no-restore
       working-directory: ./Demo
     - name: Test
-      run: dotnet test ./Demo/tests --no-restore --verbosity normal
+      run: dotnet test ./Demo/tests/Demo.Tests --no-restore --verbosity normal
