@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     env: 
-      UNIT_TESTS_PROJECT_PATH: ./Demo/tests/Demo.Tests/Demo.UnitTests.csproj
+      UNIT_TESTS_PROJECT_PATH: ./Demo/tests/Demo.Tests/Demo.UnitTests/Demo.UnitTests.csproj
       WEBAPI_SOLUTION_PATH: ./Demo/Demo.sln
 
     runs-on: ubuntu-latest
