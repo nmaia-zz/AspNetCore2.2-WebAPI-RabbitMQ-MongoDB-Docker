@@ -23,53 +23,24 @@ namespace Demo.Infra.Repository
 
         }
 
-        public async Task<IEnumerable<Research>> GetFilteredResearches(Dictionary<string, string> filter)
+        public async Task<IEnumerable<Research>> GetFilteredResearches(FilterObject filter)
         {
             var predicate = PredicateBuilder.New<Research>();
 
-            // -------------------- region
-            var region = (filter.Where(x => x.Key == "Region").Select(y => y.Value).FirstOrDefault() != string.Empty)
-                ? filter.Where(x => x.Key == "Region").Select(y => y.Value).FirstOrDefault()
-                : string.Empty;
+            if (!string.IsNullOrEmpty(filter.Region))
+                predicate = predicate.And(r => r.Region == (Region)Enum.Parse(typeof(Region), filter.Region.ToUpper()));
 
-            if (!string.IsNullOrEmpty(region))
-                predicate = predicate.And(r => r.Region == (Region)Enum.Parse(typeof(Region), region.ToUpper()));
+            if (!string.IsNullOrEmpty(filter.FirstName))
+                predicate = predicate.And(r => r.Person.FirstName.ToLower().Contains(filter.FirstName.ToLower()));
 
-            // -------------------- name
+            if (!string.IsNullOrEmpty(filter.Gender))
+                predicate = predicate.And(r => r.Person.Gender == (Gender)Enum.Parse(typeof(Gender), filter.Gender.ToUpper()));
 
-            var firstName = (filter.Where(x => x.Key == "FirstName").Select(y => y.Value).FirstOrDefault() != string.Empty)
-                ? filter.Where(x => x.Key == "FirstName").Select(y => y.Value).FirstOrDefault()
-                : string.Empty;
+            if (!string.IsNullOrEmpty(filter.SkinColor))
+                predicate = predicate.And(r => r.Person.SkinColor == (SkinColor)Enum.Parse(typeof(SkinColor), filter.SkinColor.ToUpper()));
 
-            if (!string.IsNullOrEmpty(firstName))
-                predicate = predicate.And(r => r.Person.FirstName.ToLower().Contains(firstName.ToLower()));
-
-            // -------------------- gender
-
-            var gender = (filter.Where(x => x.Key == "Gender").Select(y => y.Value).FirstOrDefault() != string.Empty)
-                ? filter.Where(x => x.Key == "Gender").Select(y => y.Value).FirstOrDefault()
-                : string.Empty;
-
-            if (!string.IsNullOrEmpty(gender))
-                predicate = predicate.And(r => r.Person.Gender == (Gender)Enum.Parse(typeof(Gender), gender.ToUpper()));
-
-            // -------------------- skinColor
-
-            var skinColor = (filter.Where(x => x.Key == "SkinColor").Select(y => y.Value).FirstOrDefault() != string.Empty)
-                ? filter.Where(x => x.Key == "SkinColor").Select(y => y.Value).FirstOrDefault()
-                : string.Empty;
-
-            if (!string.IsNullOrEmpty(skinColor))
-                predicate = predicate.And(r => r.Person.SkinColor == (SkinColor)Enum.Parse(typeof(SkinColor), skinColor.ToUpper()));
-
-            // -------------------- schooling
-
-            var schooling = (filter.Where(x => x.Key == "Schooling").Select(y => y.Value).FirstOrDefault() != string.Empty)
-                ? filter.Where(x => x.Key == "Schooling").Select(y => y.Value).FirstOrDefault()
-                : string.Empty;
-
-            if (!string.IsNullOrEmpty(schooling))
-                predicate = predicate.And(r => r.Person.Schooling == (Schooling)Enum.Parse(typeof(Schooling), schooling.ToUpper()));
+            if (!string.IsNullOrEmpty(filter.Schooling))
+                predicate = predicate.And(r => r.Person.Schooling == (Schooling)Enum.Parse(typeof(Schooling), filter.Schooling.ToUpper()));
 
             var queryResult = await Task.Run(() => {
                 
@@ -80,7 +51,7 @@ namespace Demo.Infra.Repository
             return queryResult;
         }
 
-        public async Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(Dictionary<string, string> filter)
+        public async Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(FilterObject filter)
         {
             var nonGroupedResponse = (await GetFilteredResearches(filter)).ToList();
 

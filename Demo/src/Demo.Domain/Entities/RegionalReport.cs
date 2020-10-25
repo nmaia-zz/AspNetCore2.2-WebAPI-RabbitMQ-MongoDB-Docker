@@ -2,7 +2,7 @@
 
 namespace Demo.Domain.Entities
 {
-    public class RegionalReport : Report
+    public class RegionalReport
     {
         public Dictionary<string, decimal> PercentagePerName { get; set; }
     }

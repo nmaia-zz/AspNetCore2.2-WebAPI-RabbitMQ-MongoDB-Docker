@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Demo.API
 {
@@ -43,9 +44,9 @@ namespace Demo.API
             services.AddHostedService<AncestorsConsumerHostedService>();
             services.AddHostedService<ChildrenConsumerHostedService>();
             services.AddHostedService<ParentsConsumerHostedService>();
-
-            services.AddAutoMapper(typeof(Startup));
             
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddSingleton<IMongoDBContext, MongoDBContext>();                        
             services.AddSingleton<IResearchRepository, ResearchRespository>();
             services.AddSingleton<IAncestorsReportsRepository, AncestorsReportsRepository>();
@@ -59,9 +60,10 @@ namespace Demo.API
             services.AddScoped<IQueueManagementParentsReport, QueueManagementParents>();
             
             services.AddScoped<IRegionalReports, RegionalReports>();
-            services.AddScoped<IAncestorsReports, AncestorsReports>();
-            services.AddScoped<IChildrenReports, ChildrenReports>();
-            services.AddScoped<IParentsReports, ParentsReports>();
+            services.AddScoped<IAncestorsReportsPublisher, AncestorsReportsPublisher>();
+            services.AddScoped<IChildrenReportsPublisher, ChildrenReportsPublisher>();
+            services.AddScoped<IParentsReportsPublisher, ParentsReportsPublisher>();
+            services.AddScoped<IFamilyTreeReports, FamilyTreeReports>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
         }

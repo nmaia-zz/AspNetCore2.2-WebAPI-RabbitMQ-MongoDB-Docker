@@ -78,7 +78,7 @@ namespace Demo.Infra.RabbitMQ.HostedServices
             _logger.LogInformation($"consumer received {content}");
 
             var responseParentsReport = JsonConvert.DeserializeObject<ParentsReport>(content);
-            _parentsRepository.Add(responseParentsReport);
+            _parentsRepository.AddAsync(responseParentsReport);
         }
 
         private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)

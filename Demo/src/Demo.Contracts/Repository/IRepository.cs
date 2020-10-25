@@ -9,10 +9,10 @@ namespace Demo.Contracts.Repository
         : IDisposable 
         where TEntity : class
     {
-        Task Add(TEntity obj);
-        Task<TEntity> GetById(ObjectId id);
-        Task<IEnumerable<TEntity>> GetAll();
-        Task Update(TEntity obj);
-        Task Remove(ObjectId id);
+        Task AddAsync(TEntity obj);
+        Task<TEntity> GetByIdAsync(ObjectId id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task UpdateAsync(TEntity obj);
+        Task RemoveAsync(ObjectId id);
     }
 }

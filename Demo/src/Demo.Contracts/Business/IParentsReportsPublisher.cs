@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Contracts.Business
 {
-    public interface IParentsReports
-        : IReports<ParentsReport>
+    public interface IParentsReportsPublisher
     {
         ParentsReport MountParentsObjectToInsert(Research research);
-        Task<ParentsReport> GetParentsReport(string id);
+        Task PublishToBeAddedIntoFamilyTree(Research research);
     }
 }

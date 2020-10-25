@@ -2,7 +2,7 @@
 
 namespace Demo.Domain.Entities
 {
-    public class AncestorsReport : Report
+    public class AncestorsReport
     {
         [BsonId]
         [BsonElement("_id")]

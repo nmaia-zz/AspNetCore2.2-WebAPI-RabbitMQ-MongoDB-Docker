@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Demo.Infra.RabbitMQ.Base
 {
@@ -17,43 +18,48 @@ namespace Demo.Infra.RabbitMQ.Base
             _connectionFactory = connectionFactory;
         }
 
-        public virtual void Publish(TEntity obj, string queue, string exchange, string routingKey)
+        public virtual async Task Publish(TEntity obj, string queue, string exchange, string routingKey)
         {
             try
             {
-                using (var connection = _connectionFactory.OpenConnection())
+                if (obj != null)
                 {
-                    using (var channel = connection.CreateModel())
+                    using (var connection = _connectionFactory.OpenConnection())
                     {
-                        channel.ExchangeDeclare(
-                            exchange: exchange,
-                            type: ExchangeType.Topic
-                        );
+                        using (var channel = connection.CreateModel())
+                        {
+                            channel.ExchangeDeclare(
+                                exchange: exchange,
+                                type: ExchangeType.Topic
+                            );
 
-                        channel.QueueDeclare(
-                            queue: queue,
-                            durable: false,
-                            exclusive: false,
-                            autoDelete: false,
-                            arguments: null
-                        );
+                            channel.QueueDeclare(
+                                queue: queue,
+                                durable: false,
+                                exclusive: false,
+                                autoDelete: false,
+                                arguments: null
+                            );
 
-                        string message = JsonConvert.SerializeObject(obj);
-                        var body = Encoding.UTF8.GetBytes(message);
+                            string message = JsonConvert.SerializeObject(obj);
+                            var body = Encoding.UTF8.GetBytes(message.ToLower());
 
-                        channel.BasicPublish(
-                            exchange: exchange,
-                            routingKey: routingKey,
-                            basicProperties: null,
-                            body: body
-                        );
-                    }
+                            channel.BasicPublish(
+                                exchange: exchange,
+                                routingKey: routingKey,
+                                basicProperties: null,
+                                body: body
+                            );
+                        }
+                    } 
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+
+            await Task.CompletedTask;
         }
     }
 }

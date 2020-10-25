@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -9,27 +9,14 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Moq" Version="4.14.7" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Demo.API">
-      <HintPath>..\..\..\src\Demo.API\bin\Debug\netcoreapp2.2\Demo.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Demo.Business">
-      <HintPath>..\..\..\src\Demo.API\bin\Debug\netcoreapp2.2\Demo.Business.dll</HintPath>
-    </Reference>
-    <Reference Include="Demo.Contracts">
-      <HintPath>..\..\..\src\Demo.API\bin\Debug\netcoreapp2.2\Demo.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="Demo.Domain">
-      <HintPath>..\..\..\src\Demo.API\bin\Debug\netcoreapp2.2\Demo.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="Demo.Infra">
-      <HintPath>..\..\..\src\Demo.API\bin\Debug\netcoreapp2.2\Demo.Infra.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\..\src\Demo.API\Demo.API.csproj" />
   </ItemGroup>
 
 </Project>

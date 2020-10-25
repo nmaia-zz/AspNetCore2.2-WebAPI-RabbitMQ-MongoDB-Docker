@@ -22,19 +22,19 @@ namespace Demo.Infra.Repository.Base
             DbSet = _context.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public virtual async Task Add(TEntity obj)
+        public virtual async Task AddAsync(TEntity obj)
             => await DbSet.InsertOneAsync(obj);      
 
-        public virtual async Task<TEntity> GetById(ObjectId id)
+        public virtual async Task<TEntity> GetByIdAsync(ObjectId id)
             => (await DbSet.FindAsync(Builders<TEntity>.Filter.Eq("_id", id))).FirstOrDefault();
 
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
             => (await DbSet.FindAsync(Builders<TEntity>.Filter.Empty)).ToList();
 
-        public virtual async Task Update(TEntity obj)
+        public virtual async Task UpdateAsync(TEntity obj)
             => await DbSet.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", obj.GetId()), obj);
 
-        public virtual async Task Remove(ObjectId id) 
+        public virtual async Task RemoveAsync(ObjectId id) 
             => await DbSet.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", id));
 
         public void Dispose()

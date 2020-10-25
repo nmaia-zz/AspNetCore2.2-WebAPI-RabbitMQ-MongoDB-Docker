@@ -1,8 +1,10 @@
-﻿namespace Demo.Contracts.RabbitMQ
+﻿using System.Threading.Tasks;
+
+namespace Demo.Contracts.RabbitMQ
 {
     public interface IQueuePublisher<TEntity> 
         where TEntity : class
     {
-        void Publish(TEntity obj, string queue, string exchange, string routingKey);
+        Task Publish(TEntity obj, string queue, string exchange, string routingKey);
     }
 }

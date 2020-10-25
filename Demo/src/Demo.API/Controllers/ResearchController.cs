@@ -21,41 +21,32 @@ namespace Demo.API.Controllers
     public class ResearchController : ControllerBase
     {
         private readonly IQueueManagementResearch _queueManagementResearch;
-        private readonly IQueueManagementAncestorReport _queueManagementAncestors;
-        private readonly IQueueManagementChildrenReport _queueManagementChildren;
-        private readonly IQueueManagementParentsReport _queueManagementParents;
         private readonly IResearchRepository _researchRepository;
         private readonly IMapper _mapper;
-        
-        // TODO: Criar uma nova controller apenas para os reports
-        private readonly IRegionalReports _regionalReports;
-        private readonly IAncestorsReports _ancestorsReports;
-        private readonly IChildrenReports _childrenReports;
-        private readonly IParentsReports _parentsReports;
+        private readonly IAncestorsReportsPublisher _ancestorsReports;
+        private readonly IChildrenReportsPublisher _childrenReports;
+        private readonly IParentsReportsPublisher _parentsReports;
 
         public ResearchController(IResearchRepository researchRepository
             , IQueueManagementResearch queueMessageResearch
             , IMapper mapper
-            , IRegionalReports regionalReports
-            , IAncestorsReports familyTreeReports, IChildrenReports childrenReports, IParentsReports parentsReports, IQueueManagementAncestorReport queueManagementAncestors, IQueueManagementChildrenReport queueManagementChildren, IQueueManagementParentsReport queueManagementParents)
+            , IAncestorsReportsPublisher ancestorsReports
+            , IChildrenReportsPublisher childrenReports
+            , IParentsReportsPublisher parentsReports)
         {
             _researchRepository = researchRepository;
             _queueManagementResearch = queueMessageResearch;
             _mapper = mapper;
-            _regionalReports = regionalReports;
-            _ancestorsReports = familyTreeReports;
+            _ancestorsReports = ancestorsReports;
             _childrenReports = childrenReports;
             _parentsReports = parentsReports;
-            _queueManagementAncestors = queueManagementAncestors;
-            _queueManagementChildren = queueManagementChildren;
-            _queueManagementParents = queueManagementParents;
         }
 
         // GET api/researches/list-all
         [HttpGet, Route("list-all")]
         public async Task<ActionResult<IEnumerable<ResearchViewModel>>> GetAllResearches()
         {
-            var allResearches = await _researchRepository.GetAll();
+            var allResearches = await _researchRepository.GetAllAsync();
 
             var model = _mapper.Map<IEnumerable<ResearchViewModel>>(allResearches);
 
@@ -64,89 +55,17 @@ namespace Demo.API.Controllers
 
         // POST api/researches/inset-one
         [HttpPost, Route("insert-one")]
-        public ActionResult<ResearchViewModel> InsertOneResearch([FromBody] ResearchViewModel model)
+        public async Task<ActionResult<ResearchViewModel>> InsertOneResearch([FromBody] ResearchViewModel model)
         {
+            // TODO: Incluir forma de validar o model para garantir a fluxo do processo.            
             var research = _mapper.Map<Research>(model);
-            var ancestors = _ancestorsReports.MountAncestorObjectToInsert(research);
-            var children = _childrenReports.MountChildrenObjectToInsert(research);
-            var parents = _parentsReports.MountParentsObjectToInsert(research);
+            await _queueManagementResearch.Publish(research, "researches.queue", "researches.exchange", "researches.queue*");
 
-            // TODO: Criar objeto para passar como parametro para o metodo abaixo
-            _queueManagementResearch.Publish(research, "researches.queue", "researches.exchange", "researches.queue*");
-            _queueManagementAncestors.Publish(ancestors, "ancestors.queue", "ancestors.exchange", "ancestors.queue*");
-            _queueManagementChildren.Publish(children, "children.queue", "children.exchange", "children.queue*");
-            _queueManagementParents.Publish(parents, "parents.queue", "parents.exchange", "parents.queue*");
+            await _childrenReports.PublishToBeAddedIntoFamilyTree(research);
+            await _parentsReports.PublishToBeAddedIntoFamilyTree(research);
+            await _ancestorsReports.PublishToBeAddedIntoFamilyTree(research);
 
             return Accepted(model); // http - 202
-        }
-
-        // GET api/researches/reports/get-percentage-by-region/{region}
-        [HttpGet, Route("reports/percentage-by-region/{region}")]
-        public async Task<ActionResult<RegionalReportViewModel>> GetPercentageByRegion([FromRoute] string region)
-        {
-            var reportResult = await _regionalReports.GetPercentageByRegionReport(region);
-
-            var responseResult = _mapper.Map<RegionalReportViewModel>(reportResult);
-
-            return Ok(responseResult); // http - 200
-        }
-
-        // GET api/researches/reports/get-family-tree/{level}
-        [HttpGet, Route("reports/family-tree/{level}/for/{personFullName}")]
-        public async Task<ActionResult<dynamic>> GetFamilyTree(string level, string personFullName) // TODO: ajustar tipo de retorno
-        {
-            AncestorsReportViewModel responseAncestorsResult;
-            ChildrenReportViewModel responseChildrenResult;
-            ParentsReportViewModel responseParentsResult;
-
-            switch (level)
-            {
-                // TODO: Remover este case, vou disponibilizar apenas pais e filhos, este caso se aplicaria em caso de existência de avós
-                case "ancestors":
-                    var reportAncestorsResult = await _ancestorsReports.GetAncestorsReport(personFullName);
-                    responseAncestorsResult = _mapper.Map<AncestorsReportViewModel>(reportAncestorsResult);
-                    return Ok(responseAncestorsResult);
-
-                case "children":
-                    var reportChildrenResult = await _childrenReports.GetChildrenReport(personFullName);
-                    responseChildrenResult = _mapper.Map<ChildrenReportViewModel>(reportChildrenResult);
-                    return Ok(responseChildrenResult);
-
-                case "parents":
-                    var reportParentsResult = await _parentsReports.GetParentsReport(personFullName);
-                    responseParentsResult = _mapper.Map<ParentsReportViewModel>(reportParentsResult);
-                    return Ok(responseParentsResult);
-
-                default:
-                    return BadRequest(); // http - 400
-            }
-        }
-
-        // GET api/researches/reports/get-filtered-report
-        [HttpGet, Route("reports/filtered-report")]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetFilteredReport([FromBody] FilterObjectViewModel modelFilter)
-        {
-            var filter = new Dictionary<string, string>
-            {
-                { "Region", modelFilter.Region },
-                { "FirstName", modelFilter.FirstName },
-                { "Gender", modelFilter.Gender },
-                { "SkinColor", modelFilter.SkinColor },
-                { "Schooling", modelFilter.Schooling }
-            };            
-
-            if (!modelFilter.IsGrouped)
-            {
-                var repositoryResponse = await _researchRepository.GetFilteredResearches(filter);
-                var responseResult = _mapper.Map<IEnumerable<ResearchViewModel>>(repositoryResponse);
-                return Ok(responseResult); // http - 200
-            }
-            else
-            {
-                var repositoryResponse = await _researchRepository.GetFilteredResearchesGrouped(filter);
-                var responseResult = _mapper.Map<IEnumerable<FilteredResearchGroupedViewModel>>(repositoryResponse);
-                return Ok(responseResult); // http - 200
-            }             
         }
     }
 }

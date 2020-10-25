@@ -6,6 +6,6 @@ namespace Demo.Contracts.Repository
     public interface IAncestorsReportsRepository
         : IRepository<AncestorsReport>
     {
-        Task<AncestorsReport> GetAncestorsById(string id);
+        Task<AncestorsReport> GetAncestorsByIdAsync(string id);
     }
 }

@@ -6,6 +6,6 @@ namespace Demo.Contracts.Repository
     public interface IParentsReportsRepository
         : IRepository<ParentsReport>
     {
-        Task<ParentsReport> GetParentsById(string id);
+        Task<ParentsReport> GetParentsByIdAsync(string id);
     }
 }

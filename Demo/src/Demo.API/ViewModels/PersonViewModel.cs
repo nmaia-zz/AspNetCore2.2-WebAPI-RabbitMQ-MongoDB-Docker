@@ -5,7 +5,11 @@ namespace Demo.API.ViewModels
     public class PersonViewModel : EntityBaseViewModel
     {
         public PersonViewModel()
-            => this.Filiation = new PersonViewModel[2];
+        {
+            Filiation = new PersonViewModel[2];
+            Children = new List<PersonViewModel>();
+        }
+            
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

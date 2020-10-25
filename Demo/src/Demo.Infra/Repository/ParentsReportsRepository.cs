@@ -17,7 +17,7 @@ namespace Demo.Infra.Repository
 
         }
 
-        public virtual async Task<ParentsReport> GetParentsById(string id)
+        public virtual async Task<ParentsReport> GetParentsByIdAsync(string id)
             => (await DbSet.FindAsync(Builders<ParentsReport>.Filter.Eq("_id", id))).FirstOrDefault();
     }
 }

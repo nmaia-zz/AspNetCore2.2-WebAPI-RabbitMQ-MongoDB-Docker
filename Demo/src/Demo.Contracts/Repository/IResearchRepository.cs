@@ -7,7 +7,7 @@ namespace Demo.Contracts.Repository
     public interface IResearchRepository 
         : IRepository<Research>
     {
-        Task<IEnumerable<Research>> GetFilteredResearches(Dictionary<string,string> filter);
-        Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(Dictionary<string, string> filter);
+        Task<IEnumerable<Research>> GetFilteredResearches(FilterObject filter);
+        Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(FilterObject filter);
     }
 }

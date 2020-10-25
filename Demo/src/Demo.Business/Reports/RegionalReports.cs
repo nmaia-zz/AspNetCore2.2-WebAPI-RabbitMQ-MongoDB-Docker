@@ -1,5 +1,4 @@
-﻿using Demo.Business.Reports.Base;
-using Demo.Contracts.Business;
+﻿using Demo.Contracts.Business;
 using Demo.Contracts.Repository;
 using Demo.Domain.Entities;
 using System;
@@ -9,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Business.Reports
 {
-    public class RegionalReports
-        : BaseReports<RegionalReport>
-        , IRegionalReports
+    public class RegionalReports : IRegionalReports
     {
         private readonly IResearchRepository _researchRepository;
 
@@ -25,10 +22,10 @@ namespace Demo.Business.Reports
         /// <returns></returns>
         public async Task<RegionalReport> GetPercentageByRegionReport(string region)
         {
-            var allResearches = await _researchRepository.GetAll();
+            var allResearches = await _researchRepository.GetAllAsync();
 
             var peopleFromRegion = allResearches.Where(
-                x => x.Region.ToString() == region)
+                x => x.Region.ToString().ToUpper() == region.ToUpper())
                     .Select(y => y.Person);
 
             var totalPeopleFromRegion = peopleFromRegion.Count();

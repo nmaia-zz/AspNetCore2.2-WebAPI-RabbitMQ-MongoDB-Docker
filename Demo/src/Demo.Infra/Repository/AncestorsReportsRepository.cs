@@ -17,7 +17,7 @@ namespace Demo.Infra.Repository
 
         }
 
-        public virtual async Task<AncestorsReport> GetAncestorsById(string id)
+        public virtual async Task<AncestorsReport> GetAncestorsByIdAsync(string id)
             => (await DbSet.FindAsync(Builders<AncestorsReport>.Filter.Eq("_id", id))).FirstOrDefault();
     }
 }

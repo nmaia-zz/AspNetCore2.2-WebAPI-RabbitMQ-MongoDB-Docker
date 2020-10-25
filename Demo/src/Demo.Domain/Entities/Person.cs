@@ -8,7 +8,10 @@ namespace Demo.Domain.Entities
     public class Person : EntityBase
     {
         public Person()
-            => this.Filiation = new Person[2];
+        {
+            Filiation = new Person[2];
+            Children = new List<Person>();
+        }            
 
         public string FirstName { get; set; }
         
