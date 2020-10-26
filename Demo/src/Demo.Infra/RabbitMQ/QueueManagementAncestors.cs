@@ -9,7 +9,7 @@ namespace Demo.Infra.RabbitMQ
 {
     public class QueueManagementAncestors
         : BaseQueueManagement<AncestorsReport>
-        , IQueueManagementAncestorReport
+        , IQueueManagementAncestorsReport
     {
         public QueueManagementAncestors(ISetupConnection connectionFactory)
             : base(connectionFactory)

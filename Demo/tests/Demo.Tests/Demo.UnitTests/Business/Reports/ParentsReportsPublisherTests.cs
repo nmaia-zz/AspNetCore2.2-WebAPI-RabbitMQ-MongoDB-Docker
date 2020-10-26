@@ -1,5 +1,4 @@
 using Demo.Business.Reports;
-using Demo.Contracts.Business;
 using Demo.Contracts.RabbitMQ;
 using Demo.Contracts.Repository;
 using Demo.Domain.Entities;
@@ -11,12 +10,12 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Demo.UnitTests.Business
+namespace Demo.UnitTests.Business.Reports
 {
-    public class ChildrenReportsTests
+    public class ParentsReportsPublisherTests
     {
         [Fact]
-        public void ChildrenReporMounttObjectTest()
+        public void ParentsReporMounttObjectTest()
         {
             //Arrange
             var research = new Research() { 
@@ -37,18 +36,17 @@ namespace Demo.UnitTests.Business
 
             };
 
-            var iChildrenReportsRepository = new Moq.Mock<IChildrenReportsRepository>();
-            var iChildrenReports = new Moq.Mock<IChildrenReportsPublisher>();
-            var iQueueManagementChildrenReport = new Moq.Mock<IQueueManagementChildrenReport>();
+            var iParentsReportsRepository = new Moq.Mock<IParentsReportsRepository>();
+            var iQueueManagementParentsReport = new Moq.Mock<IQueueManagementParentsReport>();
 
-            var childrenReports = new ChildrenReportsPublisher(iQueueManagementChildrenReport.Object);
+            var parentsReports = new ParentsReportsPublisher(iQueueManagementParentsReport.Object);
 
             // Act
-            var childReportPublisher = childrenReports.MountChildrenObjectToInsert(research);            
-            iChildrenReportsRepository.Setup(x => x.GetChildrenByIdAsync(It.IsAny<string>())).ReturnsAsync(childReportPublisher);           
+            var parentsReportPublisher = parentsReports.MountParentsObjectToInsert(research);            
+            iParentsReportsRepository.Setup(x => x.GetParentsByIdAsync(It.IsAny<string>())).ReturnsAsync(parentsReportPublisher);           
 
             // Assert
-            childReportPublisher.Should().BeOfType(typeof(ChildrenReport), "The method should return a type of 'ChildrenReport'");
+            parentsReportPublisher.Should().BeOfType(typeof(ParentsReport), "The method should return the type: ParentsReport");
         }
     }
 }

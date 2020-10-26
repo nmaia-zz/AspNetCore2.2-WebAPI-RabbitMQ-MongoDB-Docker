@@ -8,16 +8,16 @@ namespace Demo.Business.Reports
 {
     public class AncestorsReportsPublisher : IAncestorsReportsPublisher
     {
-        private readonly IQueueManagementAncestorReport _queueManagementAncestors;
+        private readonly IQueueManagementAncestorsReport _queueManagementAncestors;
 
-        public AncestorsReportsPublisher(IQueueManagementAncestorReport queueManagementAncestors)
+        public AncestorsReportsPublisher(IQueueManagementAncestorsReport queueManagementAncestors)
         { 
             _queueManagementAncestors = queueManagementAncestors;
         }
 
         public AncestorsReport MountAncestorObjectToInsert(Research research)
         {
-            if (research.Person.Filiation.Any())
+            if (research.Person.Filiation[0] != null && research.Person.Filiation[1] != null)
             {
                 var ancestors = new string[research.Person.Filiation.Length];
                 var index = 0;

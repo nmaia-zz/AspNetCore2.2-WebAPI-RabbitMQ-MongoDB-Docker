@@ -55,7 +55,7 @@ namespace Demo.API
 
             services.AddScoped<ISetupConnection, SetupConnection>();
             services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
-            services.AddScoped<IQueueManagementAncestorReport, QueueManagementAncestors>();
+            services.AddScoped<IQueueManagementAncestorsReport, QueueManagementAncestors>();
             services.AddScoped<IQueueManagementChildrenReport, QueueManagementChildren>();
             services.AddScoped<IQueueManagementParentsReport, QueueManagementParents>();
             

@@ -2,7 +2,7 @@
 
 namespace Demo.Contracts.RabbitMQ
 {
-    public interface IQueueManagementAncestorReport
+    public interface IQueueManagementAncestorsReport
         : IQueuePublisher<AncestorsReport>
     {
     }

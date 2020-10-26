@@ -1,6 +1,5 @@
 ﻿using Demo.Contracts.Business;
 using Demo.Contracts.RabbitMQ;
-using Demo.Contracts.Repository;
 using Demo.Domain.Entities;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,15 +10,14 @@ namespace Demo.Business.Reports
     {
         private readonly IQueueManagementParentsReport _queueManagementParents;
 
-        public ParentsReportsPublisher(IParentsReportsRepository parentsRepository
-            , IQueueManagementParentsReport queueManagementParents)
+        public ParentsReportsPublisher(IQueueManagementParentsReport queueManagementParents)
         {
             _queueManagementParents = queueManagementParents;
         }
 
         public ParentsReport MountParentsObjectToInsert(Research research)
         {
-            if (research.Person.Filiation.Any())
+            if (research.Person.Filiation[0] != null && research.Person.Filiation[1] != null)
             {
                 var parents = new string[research.Person.Filiation.Length];
                 var index = 0;
