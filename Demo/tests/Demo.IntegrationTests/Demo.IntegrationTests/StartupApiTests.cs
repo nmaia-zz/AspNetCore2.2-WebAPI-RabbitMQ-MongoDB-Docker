@@ -15,16 +15,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Demo.API
+namespace Demo.Tests
 {
-    public class Startup
+    public class StartupApiTests
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public StartupApiTests(IHostingEnvironment hostingEnvironment)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(hostingEnvironment.ContentRootPath)
+                //.AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", true, true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -47,10 +53,10 @@ namespace Demo.API
             services.AddHostedService<AncestorsConsumerHostedService>();
             services.AddHostedService<ChildrenConsumerHostedService>();
             services.AddHostedService<ParentsConsumerHostedService>();
-            
-            services.AddAutoMapper(typeof(Startup));
 
-            services.AddSingleton<IMongoDBContext, MongoDBContext>();                        
+            services.AddAutoMapper(typeof(StartupApiTests));
+
+            services.AddSingleton<IMongoDBContext, MongoDBContext>();
             services.AddSingleton<IResearchRepository, ResearchRepository>();
             services.AddSingleton<IAncestorsReportsRepository, AncestorsReportsRepository>();
             services.AddSingleton<IChildrenReportsRepository, ChildrenReportsRepository>();
@@ -61,14 +67,14 @@ namespace Demo.API
             services.AddScoped<IQueueManagementAncestorsReport, QueueManagementAncestors>();
             services.AddScoped<IQueueManagementChildrenReport, QueueManagementChildren>();
             services.AddScoped<IQueueManagementParentsReport, QueueManagementParents>();
-            
+
             services.AddScoped<IRegionalReports, RegionalReports>();
             services.AddScoped<IAncestorsReportsPublisher, AncestorsReportsPublisher>();
             services.AddScoped<IChildrenReportsPublisher, ChildrenReportsPublisher>();
             services.AddScoped<IParentsReportsPublisher, ParentsReportsPublisher>();
             services.AddScoped<IFamilyTreeReports, FamilyTreeReports>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,7 @@
 using Demo.Domain.Entities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -10,26 +11,30 @@ using System.Threading.Tasks;
 
 namespace Demo.Infra.RabbitMQ.HostedServices
 {
-    // TODO: Verificar o ponto para implementar o BasicNack (retornar com a msg para a fila)
+    // TODO: Verificar o ponto para implementar o BasicNack para retornar com a msg para a fila em caso de falha
     public class AncestorsConsumerHostedService : BackgroundService
     {
         private readonly ILogger _logger;
+        private readonly IAncestorsReportsRepository _ancestorsRepository;
+        private readonly IOptions<RabbitMQSettings> _rabbitMQSettings;
         private IConnection _connection;
         private IModel _channel;
-        private readonly IAncestorsReportsRepository _ancestorsRepository;
 
-        public AncestorsConsumerHostedService(ILoggerFactory loggerFactory, IAncestorsReportsRepository ancestorsRepository)
+        public AncestorsConsumerHostedService(ILoggerFactory loggerFactory
+            , IAncestorsReportsRepository ancestorsRepository
+            , IOptions<RabbitMQSettings> rabbitMQSettings)
         {
-            this._logger = loggerFactory.CreateLogger<AncestorsConsumerHostedService>();
-            InitRabbitMQ();
+            this._logger = loggerFactory.CreateLogger<AncestorsConsumerHostedService>();            
             _ancestorsRepository = ancestorsRepository;
+            _rabbitMQSettings = rabbitMQSettings;
+            InitRabbitMQ();
         }
 
         private void InitRabbitMQ()
         {
             var factory = new ConnectionFactory
             {
-                HostName = "rabbitmq",
+                HostName = _rabbitMQSettings.Value.Hostname,
                 UserName = "user",
                 Password = "pass",
                 VirtualHost = "challenge-dev"

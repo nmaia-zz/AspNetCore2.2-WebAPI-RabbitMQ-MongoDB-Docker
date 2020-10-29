@@ -2,6 +2,7 @@
 using Demo.Domain.Entities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -14,22 +15,26 @@ namespace Demo.Infra.RabbitMQ.HostedServices
     public class ChildrenConsumerHostedService : BackgroundService
     {
         private readonly ILogger _logger;
+        private readonly IChildrenReportsRepository _childrenRepository;
+        private readonly IOptions<RabbitMQSettings> _rabbitMQSettings;
         private IConnection _connection;
         private IModel _channel;
-        private readonly IChildrenReportsRepository _childrenRepository;
 
-        public ChildrenConsumerHostedService(ILoggerFactory loggerFactory, IChildrenReportsRepository childrenRepository)
+        public ChildrenConsumerHostedService(ILoggerFactory loggerFactory
+            , IChildrenReportsRepository childrenRepository
+            , IOptions<RabbitMQSettings> rabbitMQSettings)
         {
-            this._logger = loggerFactory.CreateLogger<ChildrenConsumerHostedService>();
-            InitRabbitMQ();
+            this._logger = loggerFactory.CreateLogger<ChildrenConsumerHostedService>();            
             _childrenRepository = childrenRepository;
+            _rabbitMQSettings = rabbitMQSettings;
+            InitRabbitMQ();
         }
 
         private void InitRabbitMQ()
         {
             var factory = new ConnectionFactory
             {
-                HostName = "rabbitmq",
+                HostName = _rabbitMQSettings.Value.Hostname,
                 UserName = "user",
                 Password = "pass",
                 VirtualHost = "challenge-dev"

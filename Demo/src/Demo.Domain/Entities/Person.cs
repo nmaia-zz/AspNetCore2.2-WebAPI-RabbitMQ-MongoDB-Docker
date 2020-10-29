@@ -11,7 +11,58 @@ namespace Demo.Domain.Entities
         {
             Filiation = new Person[2];
             Children = new List<Person>();
-        }            
+        }
+
+        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, Person[] filiation, List<Person> children)
+            : base(id)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Gender = gender;
+            SkinColor = skinColor;
+            Schooling = schooling;
+            Filiation = filiation;
+            Children = children;
+        }
+
+        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling)
+            : base(id)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Gender = gender;
+            SkinColor = skinColor;
+            Schooling = schooling;
+        }
+
+        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, Person[] filiation)
+            : base(id)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Gender = gender;
+            SkinColor = skinColor;
+            Schooling = schooling;
+            Filiation = filiation;
+        }
+
+        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, List<Person> children)
+            : base(id)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Gender = gender;
+            SkinColor = skinColor;
+            Schooling = schooling;
+            Children = children;
+        }
+
+        public Person(string id, string firstName, string lastName)
+            : base(id)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
 
         public string FirstName { get; set; }
         

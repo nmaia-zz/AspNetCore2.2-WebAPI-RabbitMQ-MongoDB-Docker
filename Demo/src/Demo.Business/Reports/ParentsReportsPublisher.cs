@@ -37,14 +37,14 @@ namespace Demo.Business.Reports
                 return parentsObject; 
             }
 
-            return new ParentsReport();
+            return null;
         }
 
         public async Task PublishToBeAddedIntoFamilyTree(Research research)
         {
             var parents = MountParentsObjectToInsert(research);
 
-            if (parents.Id != null && !string.IsNullOrEmpty(parents.Parent))
+            if (parents != null)
                 await _queueManagementParents.Publish(parents, "parents.queue", "parents.exchange", "parents.queue*");
         }
     }

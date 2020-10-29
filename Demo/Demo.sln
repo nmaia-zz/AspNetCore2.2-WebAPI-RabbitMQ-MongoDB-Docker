@@ -27,7 +27,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6 - Utils", "6 - Utils", "{6F8649D7-0FDE-413D-A427-3376149AAE19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Utils", "src\Demo.Utils\Demo.Utils.csproj", "{673EDD12-D520-4EE8-943C-D3C67CF2AE55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Utils", "src\Demo.Utils\Demo.Utils.csproj", "{673EDD12-D520-4EE8-943C-D3C67CF2AE55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

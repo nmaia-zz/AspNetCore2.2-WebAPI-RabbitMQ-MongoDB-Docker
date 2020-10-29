@@ -38,14 +38,14 @@ namespace Demo.Business.Reports
                 return ancestorObject; 
             }
 
-            return new AncestorsReport();
+            return null;
         }
 
         public async Task PublishToBeAddedIntoFamilyTree(Research research)
         {
             var ancestors = MountAncestorObjectToInsert(research);
 
-            if (ancestors.Id != null && !string.IsNullOrEmpty(ancestors.Parent))
+            if (ancestors != null)
                 await _queueManagementAncestors.Publish(ancestors, "ancestors.queue", "ancestors.exchange", "ancestors.queue*");
         }
     }

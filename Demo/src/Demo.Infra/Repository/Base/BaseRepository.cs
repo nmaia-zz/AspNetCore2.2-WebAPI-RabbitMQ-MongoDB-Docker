@@ -32,7 +32,21 @@ namespace Demo.Infra.Repository.Base
             => (await DbSet.FindAsync(Builders<TEntity>.Filter.Eq("_id", id))).FirstOrDefault();
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
-            => (await DbSet.FindAsync(Builders<TEntity>.Filter.Empty)).ToList();
+        {
+            IEnumerable<TEntity> result;
+
+            try
+            {
+                result = (await DbSet.FindAsync(Builders<TEntity>.Filter.Empty)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return result;
+        }
+            
 
         public virtual async Task UpdateAsync(TEntity obj)
             => await DbSet.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", obj.GetId()), obj);

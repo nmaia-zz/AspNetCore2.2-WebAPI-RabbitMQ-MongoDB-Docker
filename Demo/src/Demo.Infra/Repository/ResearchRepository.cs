@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace Demo.Infra.Repository
 {
-    public class ResearchRespository 
+    public class ResearchRepository 
         : BaseRepository<Research>
         , IResearchRepository
     {
-        public ResearchRespository(IMongoDBContext context)
+        public ResearchRepository(IMongoDBContext context)
             : base(context)
         {
 

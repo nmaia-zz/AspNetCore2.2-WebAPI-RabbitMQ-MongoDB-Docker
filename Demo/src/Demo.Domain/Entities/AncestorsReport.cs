@@ -4,6 +4,18 @@ namespace Demo.Domain.Entities
 {
     public class AncestorsReport
     {
+        public AncestorsReport()
+        {
+
+        }
+
+        public AncestorsReport(string id, string[] ancestors, string parent)
+        {
+            Id = id;
+            Ancestors = ancestors;
+            Parent = parent;            
+        }
+
         [BsonId]
         [BsonElement("_id")]
         public string Id { get; set; }
