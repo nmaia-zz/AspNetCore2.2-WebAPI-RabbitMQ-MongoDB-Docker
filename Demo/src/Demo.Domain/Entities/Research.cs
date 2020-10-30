@@ -11,8 +11,7 @@ namespace Demo.Domain.Entities
 
         }
 
-        public Research(string id, Region region, Person person)
-            : base(id)
+        public Research(Region region, Person person)
         {
             Region = region;
             Person = person;

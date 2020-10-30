@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demo.Contracts\Demo.Contracts.csproj" />
+    <PackageReference Include="FluentValidation" Version="9.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.Infra\Demo.Infra.csproj" />
     <ProjectReference Include="..\Demo.Utils\Demo.Utils.csproj" />
   </ItemGroup>
 

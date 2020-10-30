@@ -1,4 +1,4 @@
-﻿using Demo.Contracts.RabbitMQ;
+﻿using Demo.Infra.Contracts.RabbitMQ;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
@@ -60,6 +60,11 @@ namespace Demo.Infra.RabbitMQ.Base
             }
 
             await Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

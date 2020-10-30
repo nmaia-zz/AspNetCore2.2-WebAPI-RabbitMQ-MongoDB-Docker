@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Demo.Contracts.Repository
+namespace Demo.Infra.Contracts.Repository
 {
     public interface IResearchRepository 
         : IRepository<Research>

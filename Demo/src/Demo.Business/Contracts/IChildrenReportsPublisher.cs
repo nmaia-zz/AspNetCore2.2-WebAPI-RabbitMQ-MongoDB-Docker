@@ -1,9 +1,10 @@
 ﻿using Demo.Domain.Entities;
+using System;
 using System.Threading.Tasks;
 
-namespace Demo.Contracts.Business
+namespace Demo.Business.Contracts
 {
-    public interface IChildrenReportsPublisher
+    public interface IChildrenReportsPublisher : IDisposable
     {
         ChildrenReport MountChildrenObjectToInsert(Research research);
         Task PublishToBeAddedIntoFamilyTree(Research research);

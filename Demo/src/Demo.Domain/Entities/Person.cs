@@ -7,14 +7,14 @@ namespace Demo.Domain.Entities
 {
     public class Person : EntityBase
     {
+        #region ' Constructors '
         public Person()
         {
-            Filiation = new Person[2];
-            Children = new List<Person>();
+            Filiation = new string[2];
+            Children = new List<string>();
         }
 
-        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, Person[] filiation, List<Person> children)
-            : base(id)
+        public Person(string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, string[] filiation, List<string> children)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -25,8 +25,7 @@ namespace Demo.Domain.Entities
             Children = children;
         }
 
-        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling)
-            : base(id)
+        public Person(string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -35,8 +34,7 @@ namespace Demo.Domain.Entities
             Schooling = schooling;
         }
 
-        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, Person[] filiation)
-            : base(id)
+        public Person(string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, string[] filiation)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -46,8 +44,7 @@ namespace Demo.Domain.Entities
             Filiation = filiation;
         }
 
-        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, List<Person> children)
-            : base(id)
+        public Person(string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, List<string> children)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -57,12 +54,13 @@ namespace Demo.Domain.Entities
             Children = children;
         }
 
-        public Person(string id, string firstName, string lastName)
-            : base(id)
+        public Person(string firstName, string lastName)
         {
             FirstName = firstName;
             LastName = lastName;
-        }
+        } 
+
+        #endregion
 
         public string FirstName { get; set; }
         
@@ -74,9 +72,9 @@ namespace Demo.Domain.Entities
         [BsonRepresentation(BsonType.String)]
         public SkinColor SkinColor { get; set; }
 
-        public Person[] Filiation { get; set; }
+        public string[] Filiation { get; set; }
 
-        public IEnumerable<Person> Children { get; set; }
+        public IEnumerable<string> Children { get; set; }
 
         [BsonRepresentation(BsonType.String)]
         public Schooling Schooling { get; set; }        

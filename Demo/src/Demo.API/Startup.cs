@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
-using Demo.Business.Reports;
-using Demo.Contracts.Business;
-using Demo.Contracts.Database;
-using Demo.Contracts.RabbitMQ;
-using Demo.Contracts.Repository;
+using Demo.API.Configuration;
 using Demo.Infra.Data;
 using Demo.Infra.Mappings;
 using Demo.Infra.RabbitMQ;
-using Demo.Infra.RabbitMQ.HostedServices;
-using Demo.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -43,32 +37,17 @@ namespace Demo.API
 
             MongoDBPersistence.Setup();
 
-            services.AddHostedService<ResearchConsumerHostedService>();
-            services.AddHostedService<AncestorsConsumerHostedService>();
-            services.AddHostedService<ChildrenConsumerHostedService>();
-            services.AddHostedService<ParentsConsumerHostedService>();
-            
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddSingleton<IMongoDBContext, MongoDBContext>();                        
-            services.AddSingleton<IResearchRepository, ResearchRepository>();
-            services.AddSingleton<IAncestorsReportsRepository, AncestorsReportsRepository>();
-            services.AddSingleton<IChildrenReportsRepository, ChildrenReportsRepository>();
-            services.AddSingleton<IParentsReportsRepository, ParentsReportsRepository>();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddScoped<ISetupConnection, SetupConnection>();
-            services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
-            services.AddScoped<IQueueManagementAncestorsReport, QueueManagementAncestors>();
-            services.AddScoped<IQueueManagementChildrenReport, QueueManagementChildren>();
-            services.AddScoped<IQueueManagementParentsReport, QueueManagementParents>();
-            
-            services.AddScoped<IRegionalReports, RegionalReports>();
-            services.AddScoped<IAncestorsReportsPublisher, AncestorsReportsPublisher>();
-            services.AddScoped<IChildrenReportsPublisher, ChildrenReportsPublisher>();
-            services.AddScoped<IParentsReportsPublisher, ParentsReportsPublisher>();
-            services.AddScoped<IFamilyTreeReports, FamilyTreeReports>();
+            services.Configure<ApiBehaviorOptions>(options => {
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
+                options.SuppressModelStateInvalidFilter = true;
+
+            });
+
+            services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

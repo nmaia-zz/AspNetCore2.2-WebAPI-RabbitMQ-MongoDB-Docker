@@ -1,7 +1,7 @@
 ﻿using Demo.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace Demo.Contracts.Repository
+namespace Demo.Infra.Contracts.Repository
 {
     public interface IAncestorsReportsRepository
         : IRepository<AncestorsReport>

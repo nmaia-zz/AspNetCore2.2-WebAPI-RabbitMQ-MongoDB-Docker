@@ -1,7 +1,7 @@
 ﻿using Demo.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace Demo.Contracts.Business
+namespace Demo.Business.Contracts
 {
     public interface IRegionalReports
     {

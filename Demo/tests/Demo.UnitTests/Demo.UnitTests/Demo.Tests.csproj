@@ -14,6 +14,10 @@
     <PackageReference Include="Moq" Version="4.14.7" />
     <PackageReference Include="Moq.AutoMock" Version="2.1.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
@@ -21,7 +25,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Demo.API\Demo.API.csproj" />
     <ProjectReference Include="..\..\..\src\Demo.Business\Demo.Business.csproj" />
-    <ProjectReference Include="..\..\..\src\Demo.Contracts\Demo.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\Demo.Domain\Demo.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\Demo.Infra\Demo.Infra.csproj" />
     <ProjectReference Include="..\..\..\src\Demo.Utils\Demo.Utils.csproj" />

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Demo.API.ViewModels;
-using Demo.Contracts.Business;
-using Demo.Contracts.RabbitMQ;
-using Demo.Contracts.Repository;
+using Demo.Business.Contracts;
 using Demo.Domain.Entities;
+using Demo.Infra.Contracts.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
@@ -18,54 +18,57 @@ namespace Demo.API.Controllers
     [EnableCors("AllowAnyOrigin")]
     [Route("api/researches")]
     [ApiController]
-    public class ResearchController : ControllerBase
+    public class ResearchController : MainController
     {
-        private readonly IQueueManagementResearch _queueManagementResearch;
         private readonly IResearchRepository _researchRepository;
         private readonly IMapper _mapper;
-        private readonly IAncestorsReportsPublisher _ancestorsReports;
-        private readonly IChildrenReportsPublisher _childrenReports;
-        private readonly IParentsReportsPublisher _parentsReports;
+        private readonly IResearchServices _researchServices;
 
-        public ResearchController(IResearchRepository researchRepository
-            , IQueueManagementResearch queueMessageResearch
-            , IMapper mapper
-            , IAncestorsReportsPublisher ancestorsReports
-            , IChildrenReportsPublisher childrenReports
-            , IParentsReportsPublisher parentsReports)
+        public ResearchController(IResearchRepository researchRepository, 
+                                  IMapper mapper, 
+                                  IResearchServices researchServices,
+                                  INotifier notifier) : base(notifier)
         {
             _researchRepository = researchRepository;
-            _queueManagementResearch = queueMessageResearch;
             _mapper = mapper;
-            _ancestorsReports = ancestorsReports;
-            _childrenReports = childrenReports;
-            _parentsReports = parentsReports;
+            _researchServices = researchServices;
         }
 
         // GET api/researches/list-all
         [HttpGet, Route("list-all")]
         public async Task<ActionResult<IEnumerable<ResearchViewModel>>> GetAllResearches()
         {
-            var allResearches = await _researchRepository.GetAllAsync();
+            using (_researchRepository)
+            {
+                var allResearches = await _researchRepository.GetAllAsync();
 
-            var model = _mapper.Map<IEnumerable<ResearchViewModel>>(allResearches);
+                if (allResearches == null || allResearches.Count() == 0)
+                    return NotFound();
 
-            return Ok(model); // http - 200
+                var model = _mapper.Map<IEnumerable<ResearchViewModel>>(allResearches);
+
+                return CustomResponse(model); 
+            }
         }
 
-        // POST api/researches/inset-one
+        // POST api/researches/insert-one
         [HttpPost, Route("insert-one")]
         public async Task<ActionResult<ResearchViewModel>> InsertOneResearch([FromBody] ResearchViewModel model)
         {
-            // TODO: Incluir forma de validar o model para garantir a fluxo do processo.            
-            var research = _mapper.Map<Research>(model);
-            await _queueManagementResearch.Publish(research, "researches.queue", "researches.exchange", "researches.queue*");
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);            
 
-            await _childrenReports.PublishToBeAddedIntoFamilyTree(research);
-            await _parentsReports.PublishToBeAddedIntoFamilyTree(research);
-            await _ancestorsReports.PublishToBeAddedIntoFamilyTree(research);
+            using (_researchServices)
+            {
+                var research = _mapper.Map<Research>(model);
 
-            return Accepted(model); // http - 202
+                await _researchServices.PublishResearch(research);
+                await _researchServices.PublishToChildrenFamilyTree(research);
+                await _researchServices.PublishToParentsFamilyTree(research);
+                await _researchServices.PublishToAncestorsFamilyTree(research);
+                
+                return CustomResponse(model);
+            }
         }
     }
 }

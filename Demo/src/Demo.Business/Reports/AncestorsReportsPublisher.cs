@@ -1,7 +1,7 @@
-﻿using Demo.Contracts.Business;
-using Demo.Contracts.RabbitMQ;
+﻿using Demo.Business.Contracts;
 using Demo.Domain.Entities;
-using System.Linq;
+using Demo.Infra.Contracts.RabbitMQ;
+using System;
 using System.Threading.Tasks;
 
 namespace Demo.Business.Reports
@@ -24,7 +24,7 @@ namespace Demo.Business.Reports
 
                 foreach (var filiation in research.Person.Filiation)
                 {
-                    ancestors[index] = string.Join(" ", filiation.FirstName, filiation.LastName);
+                    ancestors[index] = filiation;
                     index++;
                 }
 
@@ -32,7 +32,7 @@ namespace Demo.Business.Reports
                 {
                     Id = string.Join(" ", research.Person.FirstName, research.Person.LastName),
                     Ancestors = ancestors,
-                    Parent = string.Join(", ", research.Person.Filiation[0].FirstName, research.Person.Filiation[1].FirstName)
+                    Parent = string.Join(", ", research.Person.Filiation[0], research.Person.Filiation[1])
                 };
 
                 return ancestorObject; 
@@ -47,6 +47,11 @@ namespace Demo.Business.Reports
 
             if (ancestors != null)
                 await _queueManagementAncestors.Publish(ancestors, "ancestors.queue", "ancestors.exchange", "ancestors.queue*");
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

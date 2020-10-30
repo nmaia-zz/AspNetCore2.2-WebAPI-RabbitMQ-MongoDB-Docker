@@ -1,6 +1,6 @@
-﻿using Demo.Contracts.Business;
-using Demo.Contracts.Repository;
+﻿using Demo.Business.Contracts;
 using Demo.Domain.Entities;
+using Demo.Infra.Contracts.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -7,12 +7,7 @@ namespace Demo.Domain.Entities
     {
         public EntityBase()
         {
-
-        }
-
-        public EntityBase(string id)
-        {
-            Id = id;
+            Id = ObjectId.GenerateNewId().ToString();
         }
 
         [BsonId]

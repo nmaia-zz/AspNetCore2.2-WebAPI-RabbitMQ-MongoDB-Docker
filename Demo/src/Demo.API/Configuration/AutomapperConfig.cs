@@ -8,7 +8,6 @@ namespace Demo.API.Configuration
     {
         public AutomapperConfig()
         {
-            CreateMap<EntityBase, EntityBaseViewModel>().ReverseMap();
             CreateMap<Research, ResearchViewModel>().ReverseMap();
             CreateMap<Person, PersonViewModel>().ReverseMap();
             CreateMap<RegionalReport, RegionalReportViewModel>().ReverseMap();

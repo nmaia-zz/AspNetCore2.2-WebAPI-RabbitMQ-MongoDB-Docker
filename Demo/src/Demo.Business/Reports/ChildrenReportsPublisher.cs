@@ -1,6 +1,7 @@
-﻿using Demo.Contracts.Business;
-using Demo.Contracts.RabbitMQ;
+﻿using Demo.Business.Contracts;
 using Demo.Domain.Entities;
+using Demo.Infra.Contracts.RabbitMQ;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,7 +25,7 @@ namespace Demo.Business.Reports
 
                 foreach (var child in research.Person.Children)
                 {
-                    children[index] = string.Join(" ", child.FirstName, child.LastName);
+                    children[index] = child;
                     index++;
                 }
 
@@ -46,6 +47,11 @@ namespace Demo.Business.Reports
 
             if (children != null)
                 await _queueManagementChildren.Publish(children, "children.queue", "children.exchange", "children.queue*");
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

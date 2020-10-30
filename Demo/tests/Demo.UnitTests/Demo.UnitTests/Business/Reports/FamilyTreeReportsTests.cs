@@ -1,5 +1,5 @@
 ﻿using Demo.Business.Reports;
-using Demo.Contracts.Repository;
+using Demo.Infra.Contracts.Repository;
 using Demo.Tests.Fixtures;
 using Moq;
 using System.Threading.Tasks;

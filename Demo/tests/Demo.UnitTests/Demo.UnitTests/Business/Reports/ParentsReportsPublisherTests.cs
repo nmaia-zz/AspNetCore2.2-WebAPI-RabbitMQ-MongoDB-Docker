@@ -1,6 +1,6 @@
 using Demo.Business.Reports;
-using Demo.Contracts.RabbitMQ;
 using Demo.Domain.Entities;
+using Demo.Infra.Contracts.RabbitMQ;
 using Demo.UnitTests.Fixtures;
 using FluentAssertions;
 using Moq;

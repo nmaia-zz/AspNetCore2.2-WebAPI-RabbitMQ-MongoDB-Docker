@@ -1,7 +1,7 @@
-﻿using Demo.Contracts.Database;
-using Demo.Contracts.Repository;
-using Demo.Domain.Entities;
+﻿using Demo.Domain.Entities;
 using Demo.Domain.Enums;
+using Demo.Infra.Contracts.MongoDB;
+using Demo.Infra.Contracts.Repository;
 using Demo.Infra.Repository.Base;
 using LinqKit;
 using MongoDB.Driver;
@@ -42,8 +42,9 @@ namespace Demo.Infra.Repository
             if (!string.IsNullOrEmpty(filter.Schooling))
                 predicate = predicate.And(r => r.Person.Schooling == (Schooling)Enum.Parse(typeof(Schooling), filter.Schooling.ToUpper()));
 
-            var queryResult = await Task.Run(() => {
-                
+            var queryResult = await Task.Run(() =>
+            {
+
                 return DbSet.AsQueryable<Research>()
                             .Where(predicate).ToListAsync();
             });
@@ -56,15 +57,17 @@ namespace Demo.Infra.Repository
             var nonGroupedResponse = (await GetFilteredResearches(filter)).ToList();
 
             var groupedResponse = nonGroupedResponse.AsEnumerable()
-                    .Select(x => new {
+                    .Select(x => new
+                    {
 
                         Region = x.Region.ToString(),
                         FirstName = x.Person.FirstName,
-                        Gender = x.Person.Gender.ToString(),                        
-                        SkinColor = x.Person.SkinColor.ToString(),                        
-                        Schooling = x.Person.Schooling.ToString(),                       
+                        Gender = x.Person.Gender.ToString(),
+                        SkinColor = x.Person.SkinColor.ToString(),
+                        Schooling = x.Person.Schooling.ToString(),
 
-                    }).GroupBy(g => new {
+                    }).GroupBy(g => new
+                    {
 
                         g.Region,
                         g.FirstName,
@@ -72,7 +75,8 @@ namespace Demo.Infra.Repository
                         g.Schooling,
                         g.SkinColor
 
-                    }).Select(s => new FilteredResearchGrouped {
+                    }).Select(s => new FilteredResearchGrouped
+                    {
 
                         Region = s.Key.Region,
                         FirstName = s.Key.FirstName,

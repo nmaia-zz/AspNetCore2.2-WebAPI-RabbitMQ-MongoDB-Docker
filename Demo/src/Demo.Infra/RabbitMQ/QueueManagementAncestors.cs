@@ -1,9 +1,6 @@
-﻿using Demo.Contracts.RabbitMQ;
-using Demo.Domain.Entities;
+﻿using Demo.Domain.Entities;
+using Demo.Infra.Contracts.RabbitMQ;
 using Demo.Infra.RabbitMQ.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Demo.Infra.RabbitMQ
 {

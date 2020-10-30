@@ -1,5 +1,5 @@
-﻿using Demo.Contracts.Repository;
-using Demo.Domain.Entities;
+﻿using Demo.Domain.Entities;
+using Demo.Infra.Contracts.Repository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

@@ -1,7 +1,6 @@
 ﻿using Demo.Domain.Entities;
-using System.Threading.Tasks;
 
-namespace Demo.Contracts.RabbitMQ
+namespace Demo.Infra.Contracts.RabbitMQ
 {
     public interface IQueueManagementResearch 
         : IQueuePublisher<Research>

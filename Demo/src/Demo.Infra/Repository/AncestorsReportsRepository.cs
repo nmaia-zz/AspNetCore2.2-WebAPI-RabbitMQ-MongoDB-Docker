@@ -1,6 +1,6 @@
-﻿using Demo.Contracts.Database;
-using Demo.Contracts.Repository;
-using Demo.Domain.Entities;
+﻿using Demo.Domain.Entities;
+using Demo.Infra.Contracts.MongoDB;
+using Demo.Infra.Contracts.Repository;
 using Demo.Infra.Repository.Base;
 using MongoDB.Driver;
 using System.Threading.Tasks;

@@ -1,5 +1,5 @@
-﻿using Demo.Contracts.Business;
-using Demo.Contracts.Repository;
+﻿using Demo.Business.Contracts;
+using Demo.Infra.Contracts.Repository;
 using System.Threading.Tasks;
 
 namespace Demo.Business.Reports
