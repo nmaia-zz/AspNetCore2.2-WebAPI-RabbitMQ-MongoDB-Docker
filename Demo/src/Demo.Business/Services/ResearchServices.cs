@@ -46,7 +46,7 @@ namespace Demo.Business.Services
 
             if (isDuplicatedResearch)
             {
-                Notify("This person has already answered the research.");
+                Notify("This person has answered the research already.");
                 return false;
             }
 
@@ -62,6 +62,7 @@ namespace Demo.Business.Services
                 return true;
             }
 
+            Notify("We've had an error when publishing 'parents' family tree");
             return false;
         }
 
@@ -73,6 +74,7 @@ namespace Demo.Business.Services
                 return true;
             }
 
+            Notify("We've had an error when publishing 'children' family tree");
             return false;                
         }
 
@@ -84,6 +86,7 @@ namespace Demo.Business.Services
                 return true;
             }
 
+            Notify("We've had an error when publishing 'ancestors' family tree");
             return false;
         }
 

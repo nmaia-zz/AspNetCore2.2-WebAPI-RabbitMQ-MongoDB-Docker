@@ -62,10 +62,14 @@ namespace Demo.API.Controllers
             {
                 var research = _mapper.Map<Research>(model);
 
-                await _researchServices.PublishResearch(research);
-                await _researchServices.PublishToChildrenFamilyTree(research);
-                await _researchServices.PublishToParentsFamilyTree(research);
-                await _researchServices.PublishToAncestorsFamilyTree(research);
+                var researchHasBeenPublished = await _researchServices.PublishResearch(research);
+
+                if (researchHasBeenPublished)
+                {
+                    await _researchServices.PublishToChildrenFamilyTree(research);
+                    await _researchServices.PublishToParentsFamilyTree(research);
+                    await _researchServices.PublishToAncestorsFamilyTree(research);
+                }
                 
                 return CustomResponse(model);
             }
