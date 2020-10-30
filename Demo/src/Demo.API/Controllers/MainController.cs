@@ -3,10 +3,13 @@ using Demo.Business.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
+using System.Net.Mime;
 
 namespace Demo.API.Controllers
 {
     [ApiController]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces("application/json")]
     public abstract class MainController : ControllerBase
     {
         private readonly INotifier _notifier;
