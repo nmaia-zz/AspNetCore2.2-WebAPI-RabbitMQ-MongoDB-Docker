@@ -1,4 +1,4 @@
-name: .NET Core
+name: API Challenge - .NET Core 2.2
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 2.2
         
-    - name: Executing Tests - Unit and Integration
+    - name: Executing Unit Tests
       run: dotnet test ${{ env.UNIT_TESTS_PROJECT_PATH }} --verbosity minimal        
         
     - name: Install dependencies
