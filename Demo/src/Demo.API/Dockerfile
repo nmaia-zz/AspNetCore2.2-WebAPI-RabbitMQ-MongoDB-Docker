@@ -9,9 +9,9 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["src/Demo.API/Demo.API.csproj", "src/Demo.API/"]
 COPY ["src/Demo.Infra/Demo.Infra.csproj", "src/Demo.Infra/"]
-COPY ["src/Demo.Contracts/Demo.Contracts.csproj", "src/Demo.Contracts/"]
 COPY ["src/Demo.Domain/Demo.Domain.csproj", "src/Demo.Domain/"]
 COPY ["src/Demo.Business/Demo.Business.csproj", "src/Demo.Business/"]
+COPY ["src/Demo.Utils/Demo.Utils.csproj", "src/Demo.Utils/"]
 RUN dotnet restore "src/Demo.API/Demo.API.csproj"
 COPY . .
 WORKDIR "/src/src/Demo.API"
