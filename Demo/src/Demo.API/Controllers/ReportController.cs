@@ -3,7 +3,7 @@ using Demo.API.ViewModels;
 using Demo.Business.Contracts;
 using Demo.Domain.Entities;
 using Demo.Infra.Contracts.Repository;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
-    [EnableCors("AllowAnyOrigin")]
+    [AllowAnonymous]
     [Route("api/reports")]
     [ApiController]
     public class ReportController : MainController
@@ -33,8 +33,8 @@ namespace Demo.API.Controllers
             _researchRepository = researchRepository;
         }
 
-        // GET api/reports/get-percentage-by-region/{region}
-        [HttpGet, Route("percentage-by-region/{region}")]
+        // GET api/reports/name-percentage-by-region/{region}
+        [HttpGet, Route("name-percentage-by-region/{region}")]
         public async Task<ActionResult<RegionalReportViewModel>> GetPercentageByRegion([FromRoute] string region)
         {
             var regionalReport = await _regionalReports.GetPercentageByRegionReport(region);
@@ -45,10 +45,11 @@ namespace Demo.API.Controllers
             return CustomResponse(_mapper.Map<RegionalReportViewModel>(regionalReport));
         }
 
-        // GET api/reports/get-family-tree/{level}
-        [HttpGet, Route("family-tree/{level}/for/{personFullName}")]
-        public async Task<ActionResult<dynamic>> GetFamilyTree(string level, string personFullName)
+        // GET api/reports/family-tree
+        [HttpGet, Route("family-tree-of/{level}/for/{firstName}/{lastName}")]
+        public async Task<ActionResult<dynamic>> GetFamilyTree([FromRoute] string level, string firstName, string lastName)
         {
+            var personFullName = $"{firstName} {lastName}";
             var responseResult = await _familyTreeReports.GetFamilyTreeBasedOnLevelByPerson(level, personFullName);
 
             if (responseResult == null)
@@ -72,7 +73,7 @@ namespace Demo.API.Controllers
         }
 
         // GET api/reports/get-filtered-report
-        [HttpGet, Route("filtered-report")]
+        [HttpPost, Route("filtered-report")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetFilteredReport([FromBody] FilterObjectViewModel modelFilter)
         {
             var filter = _mapper.Map<FilterObject>(modelFilter);

@@ -1,9 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 
 namespace Demo.API.ViewModels
 {
     public class ResearchViewModel
     {
+        public ResearchViewModel()
+        {
+        }
+
         public string Id { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]

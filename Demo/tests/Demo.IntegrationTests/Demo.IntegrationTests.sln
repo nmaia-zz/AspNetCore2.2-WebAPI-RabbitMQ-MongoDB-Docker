@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Tests", "Demo.IntegrationTests\Demo.Tests.csproj", "{3CC3A57E-C805-43B5-BEC0-B1ABDAEB2209}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Integration Tests", "1 - Integration Tests", "{FBBBB8ED-C215-42C9-B216-F5A613F7D49A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Tests", "Demo.IntegrationTests\Demo.Tests\Demo.Tests.csproj", "{4A825304-3540-42BE-BF12-B66206290B5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +13,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3CC3A57E-C805-43B5-BEC0-B1ABDAEB2209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3CC3A57E-C805-43B5-BEC0-B1ABDAEB2209}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3CC3A57E-C805-43B5-BEC0-B1ABDAEB2209}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3CC3A57E-C805-43B5-BEC0-B1ABDAEB2209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A825304-3540-42BE-BF12-B66206290B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A825304-3540-42BE-BF12-B66206290B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A825304-3540-42BE-BF12-B66206290B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A825304-3540-42BE-BF12-B66206290B5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3CC3A57E-C805-43B5-BEC0-B1ABDAEB2209} = {FBBBB8ED-C215-42C9-B216-F5A613F7D49A}
+		{4A825304-3540-42BE-BF12-B66206290B5E} = {FBBBB8ED-C215-42C9-B216-F5A613F7D49A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EEE37D0-E4C0-4DD3-BB4E-9D5EDFC05BA4}

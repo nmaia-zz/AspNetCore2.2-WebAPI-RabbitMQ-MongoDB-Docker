@@ -23,9 +23,7 @@ namespace Demo.Infra.Repository.Base
         }
 
         public virtual async Task AddAsync(TEntity obj)
-        {
-            await DbSet.InsertOneAsync(obj);
-        }
+            => await DbSet.InsertOneAsync(obj);
 
         public virtual async Task<TEntity> GetByIdAsync(ObjectId id)
             => (await DbSet.FindAsync(Builders<TEntity>.Filter.Eq("_id", id))).FirstOrDefault();

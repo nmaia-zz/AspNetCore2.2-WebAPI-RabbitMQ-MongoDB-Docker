@@ -21,16 +21,8 @@ namespace Demo.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            // Enable CORS
-            services.AddCors(options => {
-
-                options.AddPolicy("AllowAnyOrigin",
-                    builder => builder.AllowAnyOrigin());
-
-            });
-
             services.AddOptions();
             services.Configure<MongoDBSettings>(Configuration.GetSection("MongoDBSettings"));
             services.Configure<RabbitMQSettings>(Configuration.GetSection("RabbitMQSettings"));
@@ -51,7 +43,7 @@ namespace Demo.API
 
             services.AddSwaggerGen(s => {
 
-                s.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "API Challenge", Version = "v1" });
+                s.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "API Asp.Net Core 2.2 Sample", Version = "v1" });
 
             });
         }
@@ -75,7 +67,7 @@ namespace Demo.API
             app.UseSwagger();
             app.UseSwaggerUI(s => {
 
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "API Challenge V1");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "API Asp.Net Core 2.2 Sample V1");
 
             });
         }

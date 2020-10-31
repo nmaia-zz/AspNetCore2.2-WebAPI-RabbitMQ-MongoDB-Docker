@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Demo.API.ViewModels.Extensions;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Demo.API.ViewModels
@@ -28,6 +29,7 @@ namespace Demo.API.ViewModels
         public string SkinColor { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]
+        [FiliationArrayLenghtValidation(ErrorMessage = "The filiation field must have two names, one for the father and another for the mother).")]
         public string[] Filiation { get; set; }
 
         public IEnumerable<string> Children { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Demo.Business.Contracts;
 using Demo.Business.Notifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Net.Mime;
 
 namespace Demo.API.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces("application/json")]
