@@ -24,14 +24,14 @@ namespace Demo.Tests.Fixtures
             return _familyTreeReports;
         }
 
-        public DOMAIN.AncestorsReport GetAncestorsReport() 
+        public DOMAIN.AncestorsTree GetAncestorsReport() 
         {
             var gender = new Faker().PickRandom<Name.Gender>();
 
             var father = $"{ new Faker().Name.FirstName(Name.Gender.Male) } { new Faker().Name.LastName(Name.Gender.Male) }";
             var mother = $"{ new Faker().Name.FirstName(Name.Gender.Female) } { new Faker().Name.LastName(Name.Gender.Female) }";
 
-            var ancestors = new Faker<DOMAIN.AncestorsReport>("en").CustomInstantiator(f => new DOMAIN.AncestorsReport(
+            var ancestors = new Faker<DOMAIN.AncestorsTree>("en").CustomInstantiator(f => new DOMAIN.AncestorsTree(
 
                 $"{ f.Name.FirstName(gender) } { f.Name.LastName(gender) }",
                 new string[2] { father, mother },
@@ -42,14 +42,14 @@ namespace Demo.Tests.Fixtures
             return ancestors;
         }
 
-        public DOMAIN.ParentsReport GetParentsReport()
+        public DOMAIN.ParentsTree GetParentsReport()
         {
             var gender = new Faker().PickRandom<Name.Gender>();
 
             var father = $"{ new Faker().Name.FirstName(Name.Gender.Male) } { new Faker().Name.LastName(Name.Gender.Male) }";
             var mother = $"{ new Faker().Name.FirstName(Name.Gender.Female) } { new Faker().Name.LastName(Name.Gender.Female) }";
 
-            var parents = new Faker<DOMAIN.ParentsReport>("en").CustomInstantiator(f => new DOMAIN.ParentsReport(
+            var parents = new Faker<DOMAIN.ParentsTree>("en").CustomInstantiator(f => new DOMAIN.ParentsTree(
 
                 $"{ f.Name.FirstName(gender) } { f.Name.LastName(gender) }",
                 $"{ father }, { mother }"
@@ -59,13 +59,13 @@ namespace Demo.Tests.Fixtures
             return parents;
         }
 
-        public DOMAIN.ChildrenReport GetChildrenReport()
+        public DOMAIN.ChildrenTree GetChildrenReport()
         {
             var gender = new Faker().PickRandom<Name.Gender>();
 
             var child = $"{ new Faker().Name.FirstName(Name.Gender.Male) } { new Faker().Name.LastName(Name.Gender.Male) }";
 
-            var children = new Faker<DOMAIN.ChildrenReport>("en").CustomInstantiator(f => new DOMAIN.ChildrenReport(
+            var children = new Faker<DOMAIN.ChildrenTree>("en").CustomInstantiator(f => new DOMAIN.ChildrenTree(
 
                 $"{ f.Name.FirstName(gender) } { f.Name.LastName(gender) }",
                 new string[1] { child }

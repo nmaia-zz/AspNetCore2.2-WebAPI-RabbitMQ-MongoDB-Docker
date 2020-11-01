@@ -31,7 +31,7 @@ namespace Demo.UnitTests.Business.Reports
             await _familyTreeReportsBusiness.GetFamilyTreeBasedOnLevelByPerson(level, personFullName);
 
             // Assert
-            _reportsTestsFixture.Mocker.GetMock<IAncestorsReportsRepository>()
+            _reportsTestsFixture.Mocker.GetMock<IAncestorsTreeRepository>()
                 .Verify(a => a.GetAncestorsByIdAsync(It.IsAny<string>()), Times.Once);
 
             _testOutputHelper.WriteLine($"Executed test: GetAncestorsFamilyTreeBasedOnLevelByPersonTest");
@@ -46,7 +46,7 @@ namespace Demo.UnitTests.Business.Reports
             await _familyTreeReportsBusiness.GetFamilyTreeBasedOnLevelByPerson(level, personFullName);
 
             // Assert
-            _reportsTestsFixture.Mocker.GetMock<IParentsReportsRepository>()
+            _reportsTestsFixture.Mocker.GetMock<IParentsTreeRepository>()
                 .Verify(p => p.GetParentsByIdAsync(It.IsAny<string>()), Times.Once);
 
             _testOutputHelper.WriteLine($"Executed test: GetParentsFamilyTreeBasedOnLevelByPersonTest");
@@ -61,7 +61,7 @@ namespace Demo.UnitTests.Business.Reports
             await _familyTreeReportsBusiness.GetFamilyTreeBasedOnLevelByPerson(level, personFullName);
 
             // Assert
-            _reportsTestsFixture.Mocker.GetMock<IChildrenReportsRepository>()
+            _reportsTestsFixture.Mocker.GetMock<IChildrenTreeRepository>()
                 .Verify(p => p.GetChildrenByIdAsync(It.IsAny<string>()), Times.Once);
 
             _testOutputHelper.WriteLine($"Executed test: GetChildrenFamilyTreeBasedOnLevelByPersonTest");

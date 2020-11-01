@@ -1,3 +1,4 @@
+using Demo.Business.QueuePublishers;
 using Demo.Business.Reports;
 using Demo.Domain.Entities;
 using Demo.Infra.Contracts.RabbitMQ;
@@ -24,14 +25,14 @@ namespace Demo.UnitTests.Business.Reports
         {
             //Arrange
             var research = _researchTestsFixture.CreateValidResearch();
-            var iQueueManagementChildrenReport = new Mock<IQueueManagementChildrenReport>();
-            var childrenReports = new ChildrenReportsPublisher(iQueueManagementChildrenReport.Object);
+            var iQueueManagementChildrenReport = new Mock<IQueueManagerChildrenTree>();
+            var childrenReports = new ChildrenTreePublisher(iQueueManagementChildrenReport.Object);
 
             // Act
             var childReportPublisher = childrenReports.MountChildrenObjectToInsert(research);            
 
             // Assert
-            childReportPublisher.Should().BeOfType(typeof(ChildrenReport), "The method should return the type: ChildrenReport");
+            childReportPublisher.Should().BeOfType(typeof(ChildrenTree), "The method should return the type: ChildrenReport");
         }
     }
 }
