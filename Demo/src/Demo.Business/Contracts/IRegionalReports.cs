@@ -1,10 +1,10 @@
-﻿using Demo.Domain.Entities;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Demo.Business.Contracts
 {
     public interface IRegionalReports
     {
-        Task<RegionalReport> GetPercentageByRegionReport(string region);
+        Task<Dictionary<string, decimal>> GetNamesPercentageByRegion(string region);
     }
 }

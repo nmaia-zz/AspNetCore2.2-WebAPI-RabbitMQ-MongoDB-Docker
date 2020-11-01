@@ -1,5 +1,4 @@
 ﻿using Demo.Business.Contracts;
-using Demo.Domain.Entities;
 using Demo.Infra.Contracts.Repository;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace Demo.Business.Reports
         /// </summary>
         /// <param name="researches"></param>
         /// <returns></returns>
-        public async Task<RegionalReport> GetPercentageByRegionReport(string region)
+        public async Task<Dictionary<string, decimal>> GetNamesPercentageByRegion(string region)
         {
             var allResearches = await _researchRepository.GetAllAsync();
 
@@ -37,12 +36,12 @@ namespace Demo.Business.Reports
                             Percentage = GetPercentage(group.Count(s => s.FirstName == group.Key), totalPeopleFromRegion) 
                         });
 
-            var responseResult = new RegionalReport{ PercentagePerName = new Dictionary<string, decimal>() };
+            var result = new Dictionary<string, decimal>();
 
             foreach (var item in groupResult)
-                responseResult.PercentagePerName.Add(item.Name, item.Percentage);
+                result.Add(item.Name, item.Percentage);
 
-            return responseResult;
+            return result;
         }
 
         public decimal GetPercentage(int qttyPerName, int totalPeopleFromRegion)

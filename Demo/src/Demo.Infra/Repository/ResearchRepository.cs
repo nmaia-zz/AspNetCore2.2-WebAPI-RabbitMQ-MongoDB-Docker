@@ -2,6 +2,7 @@
 using Demo.Domain.Enums;
 using Demo.Infra.Contracts.MongoDB;
 using Demo.Infra.Contracts.Repository;
+using Demo.Infra.DTO;
 using Demo.Infra.Repository.Base;
 using LinqKit;
 using MongoDB.Driver;
@@ -23,24 +24,24 @@ namespace Demo.Infra.Repository
 
         }
 
-        public async Task<IEnumerable<Research>> GetFilteredResearches(FilterObject filter)
+        public async Task<IEnumerable<Research>> GetFilteredResearches(Research filter)
         {
             var predicate = PredicateBuilder.New<Research>();
 
-            if (!string.IsNullOrEmpty(filter.Region))
-                predicate = predicate.And(r => r.Region == (Region)Enum.Parse(typeof(Region), filter.Region.ToUpper()));
+            if (!string.IsNullOrEmpty(filter.Region.ToString()))
+                predicate = predicate.And(r => r.Region == (Region)Enum.Parse(typeof(Region), filter.Region.ToString().ToUpper()));
 
-            if (!string.IsNullOrEmpty(filter.FirstName))
-                predicate = predicate.And(r => r.Person.FirstName.ToLower().Contains(filter.FirstName.ToLower()));
+            if (!string.IsNullOrEmpty(filter.Person.FirstName))
+                predicate = predicate.And(r => r.Person.FirstName.ToLower().Contains(filter.Person.FirstName.ToLower()));
 
-            if (!string.IsNullOrEmpty(filter.Gender))
-                predicate = predicate.And(r => r.Person.Gender == (Gender)Enum.Parse(typeof(Gender), filter.Gender.ToUpper()));
+            if (!string.IsNullOrEmpty(filter.Person.Gender.ToString()))
+                predicate = predicate.And(r => r.Person.Gender == (Gender)Enum.Parse(typeof(Gender), filter.Person.Gender.ToString().ToUpper()));
 
-            if (!string.IsNullOrEmpty(filter.SkinColor))
-                predicate = predicate.And(r => r.Person.SkinColor == (SkinColor)Enum.Parse(typeof(SkinColor), filter.SkinColor.ToUpper()));
+            if (!string.IsNullOrEmpty(filter.Person.SkinColor.ToString()))
+                predicate = predicate.And(r => r.Person.SkinColor == (SkinColor)Enum.Parse(typeof(SkinColor), filter.Person.SkinColor.ToString().ToUpper()));
 
-            if (!string.IsNullOrEmpty(filter.Schooling))
-                predicate = predicate.And(r => r.Person.Schooling == (Schooling)Enum.Parse(typeof(Schooling), filter.Schooling.ToUpper()));
+            if (!string.IsNullOrEmpty(filter.Person.Schooling.ToString()))
+                predicate = predicate.And(r => r.Person.Schooling == (Schooling)Enum.Parse(typeof(Schooling), filter.Person.Schooling.ToString().ToUpper()));
 
             var queryResult = await Task.Run(() =>
             {
@@ -52,7 +53,7 @@ namespace Demo.Infra.Repository
             return queryResult;
         }
 
-        public async Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(FilterObject filter)
+        public async Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(Research filter)
         {
             var nonGroupedResponse = (await GetFilteredResearches(filter)).ToList();
 

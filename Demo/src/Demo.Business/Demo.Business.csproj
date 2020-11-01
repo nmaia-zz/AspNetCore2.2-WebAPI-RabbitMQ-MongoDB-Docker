@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Demo.Infra\Demo.Infra.csproj" />
-    <ProjectReference Include="..\Demo.Utils\Demo.Utils.csproj" />
   </ItemGroup>
 
 </Project>

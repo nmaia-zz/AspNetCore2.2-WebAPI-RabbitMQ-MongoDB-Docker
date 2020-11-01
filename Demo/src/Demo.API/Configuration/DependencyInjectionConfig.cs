@@ -10,6 +10,9 @@ using Demo.Business.Contracts;
 using Demo.Infra.Contracts.Repository;
 using Demo.Business.Services;
 using Demo.Business.Notifications;
+using Demo.Business.Contracts.Services;
+using Demo.Business.Contracts.QueuePublishers;
+using Demo.Business.QueuePublishers;
 
 namespace Demo.API.Configuration
 {
@@ -31,19 +34,19 @@ namespace Demo.API.Configuration
             // Repository
             services.AddSingleton<IMongoDBContext, MongoDBContext>();
             services.AddSingleton<IResearchRepository, ResearchRepository>();
-            services.AddSingleton<IAncestorsReportsRepository, AncestorsReportsRepository>();
-            services.AddSingleton<IChildrenReportsRepository, ChildrenReportsRepository>();
-            services.AddSingleton<IParentsReportsRepository, ParentsReportsRepository>();
+            services.AddSingleton<IAncestorsTreeRepository, AncestorsTreeRepository>();
+            services.AddSingleton<IChildrenTreeRepository, ChildrenTreeRepository>();
+            services.AddSingleton<IParentsTreeRepository, ParentsTreeRepository>();
 
             // RabbitMQ
             services.AddScoped<ISetupConnection, SetupConnection>();
-            services.AddScoped<IQueueManagementResearch, QueueManagementResearch>();
-            services.AddScoped<IQueueManagementAncestorsReport, QueueManagementAncestors>();
-            services.AddScoped<IQueueManagementChildrenReport, QueueManagementChildren>();
-            services.AddScoped<IQueueManagementParentsReport, QueueManagementParents>();
-            services.AddScoped<IAncestorsReportsPublisher, AncestorsReportsPublisher>();
-            services.AddScoped<IChildrenReportsPublisher, ChildrenReportsPublisher>();
-            services.AddScoped<IParentsReportsPublisher, ParentsReportsPublisher>();
+            services.AddScoped<IQueueManagerResearch, QueueManagerResearch>();
+            services.AddScoped<IQueueManagerAncestorsTree, QueueManagerAncestorsTree>();
+            services.AddScoped<IQueueManagerChildrenTree, QueueManagerChildrenTree>();
+            services.AddScoped<IQueueManagerParentsTree, QueueManagerParentsTree>();
+            services.AddScoped<IAncestorsTreePublisher, AncestorsTreePublisher>();
+            services.AddScoped<IChildrenTreePublisher, ChildrenTreePublisher>();
+            services.AddScoped<IParentsTreePublisher, ParentsTreePublisher>();
 
             // Reports
             services.AddScoped<IRegionalReports, RegionalReports>();

@@ -7,13 +7,13 @@ namespace Demo.Business.Reports
     public class FamilyTreeReports
         : IFamilyTreeReports
     {
-        private readonly IAncestorsReportsRepository _ancestorsRepository;
-        private readonly IChildrenReportsRepository _childrenRepository;
-        private readonly IParentsReportsRepository _parentsRepository;
+        private readonly IAncestorsTreeRepository _ancestorsRepository;
+        private readonly IChildrenTreeRepository _childrenRepository;
+        private readonly IParentsTreeRepository _parentsRepository;
 
-        public FamilyTreeReports(IAncestorsReportsRepository ancestorsRepository
-            , IChildrenReportsRepository childrenRepository
-            , IParentsReportsRepository parentsRepository)
+        public FamilyTreeReports(IAncestorsTreeRepository ancestorsRepository
+            , IChildrenTreeRepository childrenRepository
+            , IParentsTreeRepository parentsRepository)
         {
             _ancestorsRepository = ancestorsRepository;
             _childrenRepository = childrenRepository;

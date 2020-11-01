@@ -15,13 +15,13 @@ namespace Demo.Infra.RabbitMQ.HostedServices
     public class ChildrenConsumerHostedService : BackgroundService
     {
         private readonly ILogger _logger;
-        private readonly IChildrenReportsRepository _childrenRepository;
+        private readonly IChildrenTreeRepository _childrenRepository;
         private readonly IOptions<RabbitMQSettings> _rabbitMQSettings;
         private IConnection _connection;
         private IModel _channel;
 
         public ChildrenConsumerHostedService(ILoggerFactory loggerFactory
-            , IChildrenReportsRepository childrenRepository
+            , IChildrenTreeRepository childrenRepository
             , IOptions<RabbitMQSettings> rabbitMQSettings)
         {
             this._logger = loggerFactory.CreateLogger<ChildrenConsumerHostedService>();            
@@ -83,7 +83,7 @@ namespace Demo.Infra.RabbitMQ.HostedServices
         {
             _logger.LogInformation($"consumer received {content}");
 
-            var responseChildrenReport = JsonConvert.DeserializeObject<ChildrenReport>(content);
+            var responseChildrenReport = JsonConvert.DeserializeObject<ChildrenTree>(content);
             _childrenRepository.AddAsync(responseChildrenReport);
         }
 

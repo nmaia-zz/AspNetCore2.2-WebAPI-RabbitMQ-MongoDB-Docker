@@ -1,4 +1,5 @@
 ﻿using Demo.Business.Contracts;
+using Demo.Business.Contracts.Services;
 using Demo.Business.Models.Validations;
 using Demo.Business.Services.Base;
 using Demo.Domain.Entities;
@@ -12,28 +13,25 @@ namespace Demo.Business.Services
     public class ResearchServices : BaseServices, IResearchServices
     {
         private readonly IResearchRepository _researchRepository;
-        private readonly IQueueManagementResearch _queueManagementResearch;
-        private readonly IAncestorsReportsPublisher _ancestorsReports;
-        private readonly IChildrenReportsPublisher _childrenReports;
-        private readonly IParentsReportsPublisher _parentsReports;
+        private readonly IQueueManagerResearch _queueManagerResearch;        
 
         public ResearchServices(INotifier notifier, 
-                                IQueueManagementResearch queueManagementResearch, 
-                                IResearchRepository researchRepository, 
-                                IAncestorsReportsPublisher ancestorsReports, 
-                                IChildrenReportsPublisher childrenReports, 
-                                IParentsReportsPublisher parentsReports)
+                                IQueueManagerResearch queueManagementResearch, 
+                                IResearchRepository researchRepository)
             : base(notifier)
         {
-            _queueManagementResearch = queueManagementResearch;
+            _queueManagerResearch = queueManagementResearch;
             _researchRepository = researchRepository;
-            _ancestorsReports = ancestorsReports;
-            _childrenReports = childrenReports;
-            _parentsReports = parentsReports;
         }
 
         public async Task<bool> PublishResearch(Research research)
         {
+            if (research == null)
+            {
+                Notify("The research cannot be null.");
+                return false;
+            }
+
             if (!ExecuteValidation(new ResearchValidation(), research)
                 || !ExecuteValidation(new PersonValidation(), research.Person))
                 return false;
@@ -48,55 +46,10 @@ namespace Demo.Business.Services
             {
                 Notify("This person has answered the research already.");
                 return false;
-            }
+            }              
 
-            await _queueManagementResearch.Publish(research, "researches.queue", "researches.exchange", "researches.queue*");
+            await _queueManagerResearch.Publish(research, "researches.queue", "researches.exchange", "researches.queue*");
             return true;
-        }
-
-        public async Task<bool> PublishToParentsFamilyTree(Research research)
-        {
-            if (research.Person.Filiation.Any())
-            {
-                await _parentsReports.PublishToBeAddedIntoFamilyTree(research);
-                return true;
-            }
-
-            Notify("We've had an error when publishing 'parents' family tree");
-            return false;
-        }
-
-        public async Task<bool> PublishToChildrenFamilyTree(Research research)
-        {
-            if (research.Person.Children.Any())
-            {
-                await _childrenReports.PublishToBeAddedIntoFamilyTree(research);
-                return true;
-            }
-
-            Notify("We've had an error when publishing 'children' family tree");
-            return false;                
-        }
-
-        public async Task<bool> PublishToAncestorsFamilyTree(Research research)
-        {
-            if (research.Person.Filiation.Any())
-            {
-                await _ancestorsReports.PublishToBeAddedIntoFamilyTree(research);
-                return true;
-            }
-
-            Notify("We've had an error when publishing 'ancestors' family tree");
-            return false;
-        }
-
-        public void Dispose()
-        {
-            _queueManagementResearch?.Dispose();
-            _researchRepository?.Dispose();
-            _ancestorsReports?.Dispose();
-            _childrenReports?.Dispose();
-            _parentsReports?.Dispose();
         }
     }
 }

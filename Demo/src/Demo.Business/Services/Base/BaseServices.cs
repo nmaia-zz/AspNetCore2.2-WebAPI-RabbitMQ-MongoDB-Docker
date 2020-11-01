@@ -6,7 +6,7 @@ using FluentValidation.Results;
 
 namespace Demo.Business.Services.Base
 {
-    public class BaseServices
+    public abstract class BaseServices
     {
         private readonly INotifier _notifier;
 
@@ -15,16 +15,16 @@ namespace Demo.Business.Services.Base
             _notifier = notifier;
         }
 
-        protected void Notify(ValidationResult validationResult)
+        protected virtual void Notify(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
                 Notify(error.ErrorMessage);
         }
 
-        protected void Notify(string message)
+        protected virtual void Notify(string message)
             => _notifier.Handle(new Notification(message));
 
-        protected bool ExecuteValidation<TV, TE>(TV validation, TE entity) 
+        protected virtual bool ExecuteValidation<TV, TE>(TV validation, TE entity) 
             where TV : AbstractValidator<TE> where TE : EntityBase
         {
             var validator = validation.Validate(entity);

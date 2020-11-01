@@ -15,13 +15,13 @@ namespace Demo.Infra.RabbitMQ.HostedServices
     public class AncestorsConsumerHostedService : BackgroundService
     {
         private readonly ILogger _logger;
-        private readonly IAncestorsReportsRepository _ancestorsRepository;
+        private readonly IAncestorsTreeRepository _ancestorsRepository;
         private readonly IOptions<RabbitMQSettings> _rabbitMQSettings;
         private IConnection _connection;
         private IModel _channel;
 
         public AncestorsConsumerHostedService(ILoggerFactory loggerFactory
-            , IAncestorsReportsRepository ancestorsRepository
+            , IAncestorsTreeRepository ancestorsRepository
             , IOptions<RabbitMQSettings> rabbitMQSettings)
         {
             this._logger = loggerFactory.CreateLogger<AncestorsConsumerHostedService>();            
@@ -83,7 +83,7 @@ namespace Demo.Infra.RabbitMQ.HostedServices
         {
             _logger.LogInformation($"consumer received {content}");
 
-            var responseAncestorsReport = JsonConvert.DeserializeObject<AncestorsReport>(content);
+            var responseAncestorsReport = JsonConvert.DeserializeObject<AncestorsTree>(content);
             _ancestorsRepository.AddAsync(responseAncestorsReport);
         }
 

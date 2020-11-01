@@ -7,7 +7,7 @@ namespace Demo.Infra.Mappings
     {
         public static void ConfigureMap()
         {
-            BsonClassMap.RegisterClassMap<ChildrenReport>(map =>
+            BsonClassMap.RegisterClassMap<ChildrenTree>(map =>
             {
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);

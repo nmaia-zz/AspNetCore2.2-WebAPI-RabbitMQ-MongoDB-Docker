@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Demo.API.ViewModels;
 using Demo.Domain.Entities;
+using Demo.Infra.DTO;
 
 namespace Demo.API.Configuration
 {
@@ -10,11 +11,9 @@ namespace Demo.API.Configuration
         {
             CreateMap<Research, ResearchViewModel>().ReverseMap();
             CreateMap<Person, PersonViewModel>().ReverseMap();
-            CreateMap<RegionalReport, RegionalReportViewModel>().ReverseMap();
-            CreateMap<AncestorsReport, AncestorsReportViewModel>().ReverseMap();
-            CreateMap<ChildrenReport, ChildrenReportViewModel>().ReverseMap();
-            CreateMap<ParentsReport, ParentsReportViewModel>().ReverseMap();
-            CreateMap<FilterObject, FilterObjectViewModel>().ReverseMap();
+            CreateMap<AncestorsTree, AncestorsReportViewModel>().ReverseMap();
+            CreateMap<ChildrenTree, ChildrenReportViewModel>().ReverseMap();
+            CreateMap<ParentsTree, ParentsReportViewModel>().ReverseMap();
             CreateMap<FilteredResearchGrouped, FilteredResearchGroupedViewModel>().ReverseMap();
         }
     }

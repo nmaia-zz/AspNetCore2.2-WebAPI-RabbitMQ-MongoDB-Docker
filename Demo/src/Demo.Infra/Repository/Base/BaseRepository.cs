@@ -1,5 +1,5 @@
 ﻿using Demo.Infra.Contracts.MongoDB;
-using Demo.Infra.Contracts.Repository;
+using Demo.Infra.Contracts.Repository.Base;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using ServiceStack;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Infra.Repository.Base
 {
     public abstract class BaseRepository<TEntity>
-        : IRepository<TEntity>
+        : IBaseRepository<TEntity>
         where TEntity : class, new()
     {
         protected readonly IMongoDBContext _context;
