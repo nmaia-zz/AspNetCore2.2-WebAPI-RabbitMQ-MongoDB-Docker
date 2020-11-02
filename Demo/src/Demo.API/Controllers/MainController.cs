@@ -17,16 +17,12 @@ namespace Demo.API.Controllers
         private readonly INotifier _notifier;
 
         protected MainController(INotifier notifier)
-        {
-            _notifier = notifier;
-        }
+            => _notifier = notifier;
 
-        protected bool IsValidOperation()
-        {
-            return !_notifier.HasNotification();
-        }
+        protected virtual bool IsValidOperation()
+            => !_notifier.HasNotification();
 
-        protected ActionResult CustomResponse(object result = null)
+        protected virtual ActionResult CustomResponse(object result = null)
         {
             if (IsValidOperation())
                 return Ok(new { 
@@ -45,7 +41,7 @@ namespace Demo.API.Controllers
             });
         }
 
-        protected ActionResult CustomResponse(ModelStateDictionary modelState) 
+        protected virtual ActionResult CustomResponse(ModelStateDictionary modelState) 
         {
             if (!modelState.IsValid)
                 NotifyErrorInvalidModelState(modelState);
@@ -53,7 +49,7 @@ namespace Demo.API.Controllers
             return CustomResponse();
         }
 
-        protected void NotifyErrorInvalidModelState(ModelStateDictionary modelState)
+        protected virtual void NotifyErrorInvalidModelState(ModelStateDictionary modelState)
         {
             var errors = modelState.Values.SelectMany(e => e.Errors);
 
@@ -64,9 +60,10 @@ namespace Demo.API.Controllers
             }
         }
 
-        protected void NotifyError(string errorMessage)
-        {
-            _notifier.Handle(new Notification(errorMessage));
-        }
+        protected virtual void NotifyError(string errorMessage)
+            => _notifier.Handle(new Notification(errorMessage));
+
+        protected virtual void Notify(string message)
+            => _notifier.Handle(new Notification(message));
     }
 }

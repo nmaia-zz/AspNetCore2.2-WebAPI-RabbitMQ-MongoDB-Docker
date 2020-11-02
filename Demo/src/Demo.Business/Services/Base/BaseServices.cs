@@ -24,6 +24,9 @@ namespace Demo.Business.Services.Base
         protected virtual void Notify(string message)
             => _notifier.Handle(new Notification(message));
 
+        protected virtual void NotifyError(string errorMessage)
+            => _notifier.Handle(new Notification(errorMessage));
+
         protected virtual bool ExecuteValidation<TV, TE>(TV validation, TE entity) 
             where TV : AbstractValidator<TE> where TE : EntityBase
         {

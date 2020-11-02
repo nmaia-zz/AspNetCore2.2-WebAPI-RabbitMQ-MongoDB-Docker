@@ -1,29 +1,36 @@
 ﻿using Demo.Business.Contracts;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Demo.API.Controllers
 {
-    [AllowAnonymous]
-    [Produces("application/json")]
-    [Consumes(MediaTypeNames.Application.Json)]
-    [ApiController]
     [Route("api/tests")]
     public class TestsController : MainController
     {
-        public TestsController(INotifier notifier)
-            : base (notifier)
-        {
+        private readonly ILogger<TestsController> _logger;
 
+        public TestsController(INotifier notifier, ILogger<TestsController> logger)
+            : base(notifier)
+        {
+            _logger = logger;
         }
 
         [HttpGet, Route("ping")]
-        public async Task<ActionResult> Ping()
+        public ActionResult<string> Ping()
         {
-            return await Task.Run(() => { return Ok(); });
+            try
+            {
+                return CustomResponse("Request completed with Success.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"An error has occurred while processing the method: ActionResult<string> Ping()");
+                _logger.LogError(ex.Message, ex.StackTrace);
+
+                NotifyError(ex.Message);
+                return CustomResponse();
+            }
         }
     }
 }
