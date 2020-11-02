@@ -1,5 +1,4 @@
 using Demo.Business.QueuePublishers;
-using Demo.Business.Reports;
 using Demo.Domain.Entities;
 using Demo.Infra.Contracts.RabbitMQ;
 using Demo.UnitTests.Fixtures;
@@ -7,24 +6,24 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace Demo.UnitTests.Business.Reports
+namespace Demo.UnitTests.Business.QueuePublishers
 {
     [Collection(nameof(ResearchCollection))]
-    public class ParentsReportsPublisherTests
+    public class ParentsTreePublisherTests
     {
         private readonly ResearchTestsFixture _researchTestsFixture;
 
-        public ParentsReportsPublisherTests(ResearchTestsFixture researchTestsFixture)
+        public ParentsTreePublisherTests(ResearchTestsFixture researchTestsFixture)
         {
             _researchTestsFixture = researchTestsFixture;
         }
 
-        [Fact(DisplayName = "Mount Parents Report Object")]
-        [Trait("Category", "Family Tree Reports Tests")]
+        [Fact(DisplayName = "Mount Parents Tree Object")]
+        [Trait("Category", "Family Tree Reports")]
         public void ParentsReporMounttObjectTest()
         {
             //Arrange
-            var research = _researchTestsFixture.CreateValidResearch();
+            var research = _researchTestsFixture.CreateOneValidResearch();
             var iQueueManagementParentsReport = new Mock<IQueueManagerParentsTree>();
             var parentsReports = new ParentsTreePublisher(iQueueManagementParentsReport.Object);
 

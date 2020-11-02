@@ -23,7 +23,7 @@ namespace Demo.UnitTests.Business.Reports
         }
 
         [Theory(DisplayName = "Get Family Tree for Ancestor level")]
-        [Trait("Category", "Family Tree Reports Tests")]
+        [Trait("Category", "Family Tree Reports")]
         [InlineData("ancestors", "John Armless")]
         public async Task GetAncestorsFamilyTreeBasedOnLevelByPersonTest(string level, string personFullName)
         {
@@ -38,7 +38,7 @@ namespace Demo.UnitTests.Business.Reports
         }
 
         [Theory(DisplayName = "Get Family Tree for Parents level")]
-        [Trait("Category", "Family Tree Reports Tests")]
+        [Trait("Category", "Family Tree Reports")]
         [InlineData("parents", "John Armless")]
         public async Task GetParentsFamilyTreeBasedOnLevelByPersonTest(string level, string personFullName)
         {
@@ -53,7 +53,7 @@ namespace Demo.UnitTests.Business.Reports
         }
 
         [Theory(DisplayName = "Get Family Tree for Children level")]
-        [Trait("Category", "Family Tree Reports Tests")]
+        [Trait("Category", "Family Tree Reports")]
         [InlineData("children", "John Armless")]
         public async Task GetChildrenFamilyTreeBasedOnLevelByPersonTest(string level, string personFullName)
         {

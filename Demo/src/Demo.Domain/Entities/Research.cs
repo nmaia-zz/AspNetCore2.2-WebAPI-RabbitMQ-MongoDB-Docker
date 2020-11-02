@@ -6,16 +6,21 @@ namespace Demo.Domain.Entities
 {
     public class Research : EntityBase
     {
+        #region ' Constructors '
+
         public Research()
         {
 
         }
 
-        public Research(Region region, Person person)
+        public Research(string id, Region region, Person person)
+            : base(id)
         {
             Region = region;
             Person = person;
-        }
+        } 
+
+        #endregion
 
         [BsonRepresentation(BsonType.String)]
         public Region Region { get; set; }

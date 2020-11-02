@@ -8,13 +8,15 @@ namespace Demo.Domain.Entities
     public class Person : EntityBase
     {
         #region ' Constructors '
+
         public Person()
         {
             Filiation = new string[2];
             Children = new List<string>();
         }
 
-        public Person(string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, string[] filiation, List<string> children)
+        public Person(string id, string firstName, string lastName, Gender gender, SkinColor skinColor, Schooling schooling, string[] filiation, List<string> children)
+            : base(id)
         {
             FirstName = firstName;
             LastName = lastName;

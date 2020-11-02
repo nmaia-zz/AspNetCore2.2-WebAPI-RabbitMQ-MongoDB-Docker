@@ -15,7 +15,7 @@ namespace Demo.Business.Reports
             => _researchRepository = researchRepository;
 
         /// <summary>
-        /// Retorna o percentual de Pessoas com mesmo nome de uma determinada região.
+        /// Returns the percentage of people with the same name from specific region.
         /// </summary>
         /// <param name="researches"></param>
         /// <returns></returns>
@@ -30,11 +30,10 @@ namespace Demo.Business.Reports
             var totalPeopleFromRegion = peopleFromRegion.Count();
 
             var groupResult = peopleFromRegion.GroupBy(x => x.FirstName)
-                    .Select(group => 
-                        new { 
-                            Name = group.Key,
-                            Percentage = GetPercentage(group.Count(s => s.FirstName == group.Key), totalPeopleFromRegion) 
-                        });
+                    .Select(group =>  new { 
+                        Name = group.Key,
+                        Percentage = GetPercentage(group.Count(s => s.FirstName == group.Key), totalPeopleFromRegion) 
+                    });
 
             var result = new Dictionary<string, decimal>();
 

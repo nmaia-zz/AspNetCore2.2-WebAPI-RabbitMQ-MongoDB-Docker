@@ -13,7 +13,7 @@ namespace Demo.Tests.Fixtures
 
     public class ReportsTestsFixture : IDisposable
     {
-        public FamilyTreeReports _familyTreeReports;
+        public FamilyTreeReports _familyTreeReports;        
         public AutoMocker Mocker;
 
         public FamilyTreeReports GetFamilyTreeReports()
@@ -77,7 +77,7 @@ namespace Demo.Tests.Fixtures
 
         public void Dispose()
         {
-
+            GC.SuppressFinalize(this);
         }
     }
 }
