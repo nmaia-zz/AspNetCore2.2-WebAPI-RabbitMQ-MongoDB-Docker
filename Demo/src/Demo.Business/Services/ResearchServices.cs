@@ -44,7 +44,7 @@ namespace Demo.Business.Services
 
             if (isDuplicatedResearch)
             {
-                Notify("This person has answered the research already.");
+                Notify($"The {string.Join(" ", research.Person.FirstName, research.Person.LastName)} has already answered the research.");
                 return false;
             }              
 

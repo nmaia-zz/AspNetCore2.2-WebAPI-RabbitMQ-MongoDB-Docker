@@ -107,5 +107,50 @@ namespace Demo.API.Controllers
                 return CustomResponse();
             }
         }
+
+        // POST api/researches/insert-many
+        [HttpPost("insert-many")]
+        public async Task<ActionResult<IEnumerable<ResearchViewModel>>> InsertManyResearches([FromBody] IEnumerable<ResearchViewModel> model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return CustomResponse(ModelState);
+
+                foreach (var item in model)
+                {
+                    item.Id = ObjectId.GenerateNewId().ToString();
+                    item.Person.Id = ObjectId.GenerateNewId().ToString();
+                }
+
+                var researches = _mapper.Map<IEnumerable<Research>>(model);
+
+                var researchHasBeenPublished = false;
+
+                foreach (var research in researches)
+                {
+                    researchHasBeenPublished = await _researchServices.PublishResearch(research);
+
+                    if (researchHasBeenPublished)
+                    {
+                        if (research.Person.Children.Any())
+                            await _childrenTreeServices.PublishChildrenFamilyTree(research);
+
+                        await _parentsTreeServices.PublishParentsFamilyTree(research);
+                        await _ancestorsTreeServices.PublishAncestorsFamilyTree(research);
+                    }
+                }
+
+                return CustomResponse(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"An error has occurred while processing the method: Task<ActionResult<IEnumerable<ResearchViewModel>>> InsertManyResearches([FromBody] IEnumerable<ResearchViewModel> model: {model})");
+                _logger.LogError(ex.Message, ex.StackTrace);
+
+                NotifyError(ex.Message);
+                return CustomResponse();
+            }
+        }
     }
 }
