@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Demo.API.ViewModels;
 using Demo.Business.Contracts;
-using Demo.Domain.Entities;
 using Demo.Infra.Contracts.Repository;
+using Demo.Infra.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace Demo.API.Controllers
 {
     [AllowAnonymous]
     [Route("api/reports")]
-    [ApiController]
     public class ReportsController : MainController
     {
         private readonly IRegionalReports _regionalReports;
@@ -34,19 +33,19 @@ namespace Demo.API.Controllers
         }
 
         // GET api/reports/name-percentage-by-region/{region}
-        [HttpGet, Route("name-percentage-by-region/{region}")]
-        public async Task<ActionResult<RegionalReportViewModel>> GetPercentageByRegion([FromRoute] string region)
+        [HttpGet("name-percentage-by-region/{region}")]
+        public async Task<ActionResult<Dictionary<string, decimal>>> GetPercentageByRegion([FromRoute] string region)
         {
             var result = await _regionalReports.GetNamesPercentageByRegion(region);
 
             if (result == null || result.Count == 0)
                 return NotFound();
 
-            return CustomResponse(_mapper.Map<RegionalReportViewModel>(result));
+            return CustomResponse(result);
         }
 
         // GET api/reports/family-tree
-        [HttpGet, Route("family-tree-of/{level}/for/{firstName}/{lastName}")]
+        [HttpGet("family-tree-of/{level}/for/{firstName}/{lastName}")]
         public async Task<ActionResult<dynamic>> GetFamilyTree([FromRoute] string level, string firstName, string lastName)
         {
             var personFullName = $"{firstName} {lastName}";
@@ -73,20 +72,20 @@ namespace Demo.API.Controllers
         }
 
         // GET api/reports/get-filtered-report
-        [HttpPost, Route("filtered-report/{isGrouped:bool}")]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetFilteredReport([FromBody] ResearchViewModel modelFilter, bool isGrouped)
+        [HttpPost("filtered-report")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetFilteredReport([FromBody] FilterObjectViewModel modelFilter)
         {
-            var filter = _mapper.Map<Research>(modelFilter);
+            var filter = _mapper.Map<FilterObjectDto>(modelFilter);
 
-            if(string.IsNullOrEmpty(modelFilter.Region) && string.IsNullOrEmpty(modelFilter.Person.FirstName) && 
-               string.IsNullOrEmpty(modelFilter.Person.Gender) && string.IsNullOrEmpty(modelFilter.Person.SkinColor) && 
-               string.IsNullOrEmpty(modelFilter.Person.Schooling))
+            if(string.IsNullOrEmpty(modelFilter.Region) && string.IsNullOrEmpty(modelFilter.FirstName) && 
+               string.IsNullOrEmpty(modelFilter.Gender) && string.IsNullOrEmpty(modelFilter.SkinColor) && 
+               string.IsNullOrEmpty(modelFilter.Schooling))
             {
                 NotifyError("Select one filter at least and try again");
                 return CustomResponse();
             }
 
-            if (!isGrouped)
+            if (!filter.IsGrouped)
             {
                 var researches = await _researchRepository.GetFilteredResearches(filter);
 

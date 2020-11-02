@@ -41,11 +41,7 @@ namespace Demo.API
 
             services.ResolveDependencies();
 
-            services.AddSwaggerGen(s => {
-
-                s.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "API Asp.Net Core 2.2 Sample", Version = "v1" });
-
-            });
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,14 +58,10 @@ namespace Demo.API
             }
 
             app.UseHttpsRedirection();
+
             app.UseMvc();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(s => {
-
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "API Asp.Net Core 2.2 Sample V1");
-
-            });
+            app.UseMySwaggerConfig();
         }
     }
 }

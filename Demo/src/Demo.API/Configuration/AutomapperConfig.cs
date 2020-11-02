@@ -14,7 +14,8 @@ namespace Demo.API.Configuration
             CreateMap<AncestorsTree, AncestorsReportViewModel>().ReverseMap();
             CreateMap<ChildrenTree, ChildrenReportViewModel>().ReverseMap();
             CreateMap<ParentsTree, ParentsReportViewModel>().ReverseMap();
-            CreateMap<FilteredResearchGrouped, FilteredResearchGroupedViewModel>().ReverseMap();
+            CreateMap<FilteredResearchGroupedDto, FilteredResearchGroupedViewModel>().ReverseMap();
+            CreateMap<FilterObjectDto, FilterObjectViewModel>().ReverseMap();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Demo.Infra.Contracts.Repository
     public interface IResearchRepository 
         : IBaseRepository<Research>
     {
-        Task<IEnumerable<Research>> GetFilteredResearches(Research filter);
-        Task<IEnumerable<FilteredResearchGrouped>> GetFilteredResearchesGrouped(Research filter);
+        Task<IEnumerable<Research>> GetFilteredResearches(FilterObjectDto filter);
+        Task<IEnumerable<FilteredResearchGroupedDto>> GetFilteredResearchesGrouped(FilterObjectDto filter);
     }
 }

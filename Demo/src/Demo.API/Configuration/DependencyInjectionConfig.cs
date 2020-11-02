@@ -30,6 +30,9 @@ namespace Demo.API.Configuration
             // Services
             services.AddScoped<INotifier, Notifier>();
             services.AddScoped<IResearchServices, ResearchServices>();
+            services.AddScoped<IAncestorsTreeServices, AncestorsTreeServices>();
+            services.AddScoped<IParentsTreeServices, ParentsTreeServices>();
+            services.AddScoped<IChildrenTreeServices, ChildrenTreeServices>();
 
             // Repository
             services.AddSingleton<IMongoDBContext, MongoDBContext>();
