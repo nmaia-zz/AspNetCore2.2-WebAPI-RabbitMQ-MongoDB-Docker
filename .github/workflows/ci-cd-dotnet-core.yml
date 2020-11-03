@@ -10,7 +10,7 @@ jobs:
   build:
     env: 
       UNIT_TESTS_PROJECT_PATH: ./Demo/tests/Demo.UnitTests/Demo.UnitTests/Demo.Tests.csproj
-      INTEGRATION_TESTS_PROJECT_PATH: ./Demo/tests/Demo.IntegrationTests/Demo.IntegrationTests/Demo.Tests.csproj
+      INTEGRATION_TESTS_PROJECT_PATH: ./Demo/tests/Demo.IntegrationTests/Demo.IntegrationTests/Demo.Tests/Demo.Tests.csproj  
       WEBAPI_SOLUTION_PATH: ./Demo/Demo.sln
 
     runs-on: ubuntu-latest
