@@ -1,6 +1,10 @@
 # AspNetCore-WebAPI-RabbitMQ-MongoDB
 A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (MongoDB) and also Docker.
 
+## For the CI (Continuous Integration) I've used the following tool:
+
+- [GitHub Actions](https://github.com/nmaia/AspNetCore-WebAPI-RabbitMQ-MongoDB/actions)
+
 ## This project was developed using the following structure:
 
 ![Solution Architecure Image](https://github.com/nmaia/AspNetCore-WebAPI-RabbitMQ-MongoDB/blob/develop/Demo/docs/Solution%20Architecture/Solution-Architecture.png)
@@ -13,8 +17,8 @@ A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (Mon
 
 ## Requirements to run this project:
 
-- Asp.Net Core 2.2 (SDK or Runtime);
-- Docker Desktop - to run Linux Containers;
+- [sp.Net Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2) (SDK or Runtime);
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) - to run Linux Containers;
 
 ## In order to run this project, you must go on the followint steps:
 
