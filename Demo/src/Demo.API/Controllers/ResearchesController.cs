@@ -5,7 +5,6 @@ using Demo.Business.Contracts;
 using Demo.Business.Contracts.Services;
 using Demo.Domain.Entities;
 using Demo.Infra.Contracts.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -170,27 +169,53 @@ namespace Demo.API.Controllers
         ///     POST /api/researches/insert-many
         ///     
         ///     [{
-        ///     	"id": "",
-        ///     	"region": "SOUTHEAST_REGION",
-        ///     	"person": {
         ///     		"id": "",
-        ///     		"firstName": "Zakk",
-        ///     		"lastName": "Wylde",
-        ///     		"gender": "MALE",
-        ///     		"skinColor": "WHITE",
-        ///     		"filiation": [
-        ///     		    "Jerome F. Wielandt",
-        ///     		    "Someone Wielandt"
-        ///     		],
-        ///     		"children": [
-        ///     		    "Hayley-Rae",
-        ///     		    "Jesse John Michael",
-        ///     		    "Hendrix Halen Michael Rhoads",
-        ///     		    "Sabbath Page"
-        ///             ],
-        ///     		"schooling": "UNIVERSITY_EDUCATION"
-        ///     	}
-        ///     }]
+        ///     		"region": "SOUTHEAST_REGION",
+        ///     		"person": {
+        ///     			"id": "",
+        ///     			"firstName": "Zakk",
+        ///     			"lastName": "Wylde",
+        ///     			"gender": "MALE",
+        ///     			"skinColor": "WHITE",
+        ///     			"filiation": [
+        ///     				"Jerome F. Wielandt",
+        ///     				"Someone Wielandt"
+        ///     			],
+        ///     			"children": [
+        ///     				"Hayley-Rae",
+        ///     				"Jesse John Michael",
+        ///     				"Hendrix Halen Michael Rhoads",
+        ///     				"Sabbath Page"
+        ///     			],
+        ///     			"schooling": "UNIVERSITY_EDUCATION"
+        ///     		}
+        ///       },
+        ///       {
+        ///             "id": "",
+        ///     		"region": "SOUTHEAST_REGION",
+        ///     		"person": {
+        ///                 "id": "",
+        ///     			"firstName": "Ozzy",
+        ///     			"lastName": "Osbourne",
+        ///     			"gender": "MALE",
+        ///     			"skinColor": "WHITE",
+        ///     			"filiation": [
+        ///     
+        ///                     "Jack Osbourne",
+        ///     				"Lillian Osbourne"
+        ///     			],
+        ///     			"children": [
+        ///     
+        ///                     "Kelly Osbourne",
+        ///     				"Jack Osbourne",
+        ///     				"Aimee Osbourne",
+        ///     				"Jessica Starshine",
+        ///     				"Louis Osbourne",
+        ///     				"Elliot Kingsley"
+        ///     			],
+        ///     			"schooling": "UNIVERSITY_EDUCATION"
+        ///             }
+        ///       }]
         ///     
         /// </remarks>
         /// <param name="model">An object list that represents a list of researches.</param>
