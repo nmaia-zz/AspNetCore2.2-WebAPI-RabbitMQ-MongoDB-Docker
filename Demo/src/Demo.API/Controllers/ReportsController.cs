@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Demo.API.ResponseObjects;
 using Demo.API.ViewModels;
 using Demo.Business.Contracts;
 using Demo.Infra.Contracts.Repository;
@@ -34,8 +35,32 @@ namespace Demo.API.Controllers
             _logger = logger;
         }
 
-        // GET api/reports/name-percentage-by-region/{region}
+        /// <summary>
+        /// Returns the percentage of same names by region.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET api/reports/name-percentage-by-region/{region}
+        /// 
+        /// Enum values available for the {region} parameter (must be string):
+        /// 
+        ///     NORTHEST_REGION = 1,
+        ///     NORTH_REGION = 2,
+        ///     MIDWEST_REGION = 3,
+        ///     SOUTHEAST_REGION = 4,
+        ///     SOUTH_REGION = 5
+        /// 
+        /// </remarks>
+        /// <param name="region">Represents the available regions in the API.</param>
+        /// <returns>A dictionary containing all the names and its percentage by region.</returns>
+        /// <response code="200">A dictionary with the names and percentages for each name by region.</response>
+        /// <response code="400">If something is wrong in the process.</response>
+        /// <response code="404">If there is no data found.</response>
         [HttpGet("name-percentage-by-region/{region}")]
+        [ProducesResponseType(typeof(OkResponse), 200)]
+        [ProducesResponseType(typeof(BadResponse), 400)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
         public async Task<ActionResult<Dictionary<string, decimal>>> GetPercentageByRegion([FromRoute] string region)
         {
             try
@@ -57,8 +82,32 @@ namespace Demo.API.Controllers
             }
         }
 
-        // GET api/reports/family-tree
+        /// <summary>
+        /// Returns the family tree for the person based on the passed level (ancestors, children or parents).
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/reports/family-tree-of/{level}/for/{firstName}/{lastName}
+        /// 
+        /// Available values for the {level} parameter (string value):
+        /// 
+        ///     "ancestors",
+        ///     "children",
+        ///     "parents"
+        /// 
+        /// </remarks>
+        /// <param name="level">The level in the family tree (ancestors, children or parents).</param>
+        /// <param name="firstName">The person first name.</param>
+        /// <param name="lastName">The person last name.</param>
+        /// <returns>The family tree based on the passed level.</returns>
+        /// <response code="200">Returns the person family treen based on the passed level.</response>
+        /// <response code="400">If something is wrong in the process.</response>
+        /// <response code="404">If there is no data found.</response>
         [HttpGet("family-tree-of/{level}/for/{firstName}/{lastName}")]
+        [ProducesResponseType(typeof(OkResponse), 200)]
+        [ProducesResponseType(typeof(BadResponse), 400)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
         public async Task<ActionResult<dynamic>> GetFamilyTree([FromRoute] string level, string firstName, string lastName)
         {
             try
@@ -95,8 +144,56 @@ namespace Demo.API.Controllers
             }
         }
 
-        // GET api/reports/get-filtered-report
+        /// <summary>
+        /// Returns a list of researches, filtered or not.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET api/reports/get-filtered-report
+        /// 
+        /// Enum values available for the {region} parameter (must be string):
+        /// 
+        ///     NORTHEST_REGION = 1,
+        ///     NORTH_REGION = 2,
+        ///     MIDWEST_REGION = 3,
+        ///     SOUTHEAST_REGION = 4,
+        ///     SOUTH_REGION = 5
+        ///     
+        /// Enum values available for the {Gender} property (must be string):
+        /// 
+        ///     MALE = 1,
+        ///     FEMALE = 2
+        /// 
+        /// Enum values available for the {SkinColor} property (must be string):
+        /// 
+        ///     ALBINO = 1,
+        ///     WHITE = 2,
+        ///     YELLOW = 3,
+        ///     OLIVE = 4,
+        ///     BROWN = 5,
+        ///     BLACK = 6,
+        ///     BURNT = 7
+        /// 
+        /// Enum values available for the {Schooling} property (must be string):
+        /// 
+        ///     PHD = 1,
+        ///     MASTERS = 2,       
+        ///     POSTGRADUATE = 3,
+        ///     UNIVERSITY_EDUCATION = 4,
+        ///     ELEMENTARY_SCHOOL = 5,
+        ///     NONE = 6
+        /// 
+        /// </remarks>
+        /// <param name="modelFilter">Represents an object that will be used to filter the researches in the database.</param>
+        /// <returns>Returns a list of researches, filtered or not.</returns>
+        /// <response code="200">Returns the person family treen based on the passed level.</response>
+        /// <response code="400">If something is wrong in the process.</response>
+        /// <response code="404">If there is no data found.</response>
         [HttpPost("filtered-report")]
+        [ProducesResponseType(typeof(OkResponse), 200)]
+        [ProducesResponseType(typeof(BadResponse), 400)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetFilteredReport([FromBody] FilterObjectViewModel modelFilter)
         {
             try

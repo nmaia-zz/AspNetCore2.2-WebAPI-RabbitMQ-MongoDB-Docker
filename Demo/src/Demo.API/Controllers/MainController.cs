@@ -1,5 +1,7 @@
-﻿using Demo.Business.Contracts;
+﻿using Demo.API.ResponseObjects;
+using Demo.Business.Contracts;
 using Demo.Business.Notifications;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Net.Mime;
 
 namespace Demo.API.Controllers
 {
+    [EnableCors("AllowAnyOriginPolicy")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces("application/json")]
     [ApiController]
@@ -23,14 +26,14 @@ namespace Demo.API.Controllers
         protected virtual ActionResult CustomResponse(object result = null)
         {
             if (IsValidOperation())
-                return Ok(new { 
+                return Ok(new OkResponse { 
                 
                     success = true,
                     data = result
 
                 });
 
-            return BadRequest(new
+            return BadRequest(new BadResponse
             {
 
                 success = false,

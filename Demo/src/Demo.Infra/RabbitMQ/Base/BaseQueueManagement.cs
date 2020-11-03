@@ -39,7 +39,7 @@ namespace Demo.Infra.RabbitMQ.Base
                     );
 
                     string message = JsonConvert.SerializeObject(obj);
-                    var body = Encoding.UTF8.GetBytes(message);
+                    var body = Encoding.UTF8.GetBytes(message.ToLower());
 
                     channel.BasicPublish(
                         exchange: exchange,

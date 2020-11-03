@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Demo.API.ResponseObjects;
 using Demo.API.ViewModels;
 using Demo.Business.Contracts;
 using Demo.Business.Contracts.Services;
 using Demo.Domain.Entities;
 using Demo.Infra.Contracts.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -44,8 +46,23 @@ namespace Demo.API.Controllers
             _logger = logger;
         }
 
-        // GET api/researches/list-all
+        /// <summary>
+        /// Returns all the existing researches.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/researches/list-all
+        ///
+        /// </remarks>
+        /// <returns>A list of existing researches.</returns>
+        /// <response code="200">A list of existing researches.</response>
+        /// <response code="400">If something is wrong in the process.</response>
+        /// <response code="404">If the research is not found.</response>
         [HttpGet("list-all")]
+        [ProducesResponseType(typeof(OkResponse), 200)]
+        [ProducesResponseType(typeof(BadResponse), 400)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
         public async Task<ActionResult<IEnumerable<ResearchViewModel>>> GetAllResearches()
         {
             try
@@ -69,8 +86,46 @@ namespace Demo.API.Controllers
             }
         }
 
-        // POST api/researches/insert-one
+        /// <summary>
+        /// Publish the research into the queue to be consumed by a hosted service.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/researches/insert-one
+        ///     
+        ///     {
+        ///     	"id": "",
+        ///     	"region": "SOUTHEAST_REGION",
+        ///     	"person": {
+        ///     		"id": "",
+        ///     		"firstName": "Zakk",
+        ///     		"lastName": "Wylde",
+        ///     		"gender": "MALE",
+        ///     		"skinColor": "WHITE",
+        ///     		"filiation": [
+        ///     		    "Jerome F. Wielandt",
+        ///     		    "Someone Wielandt"
+        ///     		],
+        ///     		"children": [
+        ///     		    "Hayley-Rae",
+        ///     		    "Jesse John Michael",
+        ///     		    "Hendrix Halen Michael Rhoads",
+        ///     		    "Sabbath Page"
+        ///             ],
+        ///     		"schooling": "UNIVERSITY_EDUCATION"
+        ///     	}
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="model">An object that represents the research.</param>
+        /// <returns>Returns the registred object into the RabbitMQ queue.</returns>
+        /// <returns>Returns the model object that was inserted into the RabbitMQ queue.</returns>
+        /// <response code="202">It indicates the research was successfully inserted into RabbitMQ in order to be consumed and registered into the database.</response>
+        /// <response code="400">If something is wrong in the process.</response>
         [HttpPost("insert-one")]
+        [ProducesResponseType(typeof(AcceptedResult), 202)]
+        [ProducesResponseType(typeof(BadResponse), 400)]
         public async Task<ActionResult<ResearchViewModel>> InsertOneResearch([FromBody] ResearchViewModel model)
         {
             try
@@ -94,7 +149,7 @@ namespace Demo.API.Controllers
                     await _ancestorsTreeServices.PublishAncestorsFamilyTree(research);
                 }
 
-                return CustomResponse(model);
+                return Accepted(model);
             }
             catch (Exception ex)
             {
@@ -106,8 +161,45 @@ namespace Demo.API.Controllers
             }
         }
 
-        // POST api/researches/insert-many
+        /// <summary>
+        /// Publish a list of researches (one by one) into the queue to be consumed by a hosted service.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/researches/insert-many
+        ///     
+        ///     [{
+        ///     	"id": "",
+        ///     	"region": "SOUTHEAST_REGION",
+        ///     	"person": {
+        ///     		"id": "",
+        ///     		"firstName": "Zakk",
+        ///     		"lastName": "Wylde",
+        ///     		"gender": "MALE",
+        ///     		"skinColor": "WHITE",
+        ///     		"filiation": [
+        ///     		    "Jerome F. Wielandt",
+        ///     		    "Someone Wielandt"
+        ///     		],
+        ///     		"children": [
+        ///     		    "Hayley-Rae",
+        ///     		    "Jesse John Michael",
+        ///     		    "Hendrix Halen Michael Rhoads",
+        ///     		    "Sabbath Page"
+        ///             ],
+        ///     		"schooling": "UNIVERSITY_EDUCATION"
+        ///     	}
+        ///     }]
+        ///     
+        /// </remarks>
+        /// <param name="model">An object list that represents a list of researches.</param>
+        /// <returns>Returns all the published objects into the RabbitMQ queue.</returns>
+        /// <response code="202">It indicates the researches were successfully inserted into the RabbitMQ in order to be consumed and registered into the database.</response>
+        /// <response code="400">If something is wrong in the process.</response>
         [HttpPost("insert-many")]
+        [ProducesResponseType(typeof(AcceptedResult), 202)]
+        [ProducesResponseType(typeof(BadResponse), 400)]
         public async Task<ActionResult<IEnumerable<ResearchViewModel>>> InsertManyResearches([FromBody] IEnumerable<ResearchViewModel> model)
         {
             try
@@ -125,7 +217,7 @@ namespace Demo.API.Controllers
                 
                 await publishResearchesAndFamilyTrees(researches);
 
-                return CustomResponse(model);
+                return Accepted(model);
             }
             catch (Exception ex)
             {
@@ -137,6 +229,10 @@ namespace Demo.API.Controllers
             }
         }
 
+        /// <summary>
+        /// This method is used to publish each research in the list of researches into the RabbitMQ queue.
+        /// </summary>
+        /// <param name="researches">A list of researches</param>
         private async Task publishResearchesAndFamilyTrees(IEnumerable<Research> researches)
         {
             bool researchHasBeenPublished;
@@ -157,6 +253,12 @@ namespace Demo.API.Controllers
             }
         }
 
+        /// <summary>
+        /// This method is used to publish the family tree (ancestors, parents and children) after the research is published without errors.
+        /// This method is executed only for 'insert-many' endpoint iteration.
+        /// </summary>
+        /// <param name="research">The research that contains the family tree information.</param>
+        /// <param name="canPublish">Indicates if the family tree can be published.</param>
         private async Task PublishFamilyTrees(Research research, bool canPublish)
         {
             if (canPublish)

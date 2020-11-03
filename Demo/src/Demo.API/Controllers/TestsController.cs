@@ -1,4 +1,5 @@
-﻿using Demo.Business.Contracts;
+﻿using Demo.API.ResponseObjects;
+using Demo.Business.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,7 +17,21 @@ namespace Demo.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet, Route("ping")]
+        /// <summary>
+        /// It represents an endpoint to be consumed by the integration test in order to check if the API is answering the requests.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/tests/ping
+        ///
+        /// </remarks>
+        /// <returns>HttpStatusCode</returns>
+        /// <response code="200">Status Code 200 - OK.</response>
+        /// <response code="400">If something is wrong in the request.</response>
+        [HttpGet("ping")]
+        [ProducesResponseType(typeof(OkResponse), 200)]
+        [ProducesResponseType(typeof(BadResponse), 400)]
         public ActionResult<string> Ping()
         {
             try

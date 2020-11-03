@@ -31,6 +31,8 @@ namespace Demo.API
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddMyCorsConfig();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<ApiBehaviorOptions>(options => {
@@ -58,6 +60,8 @@ namespace Demo.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMyCorsConfig();
 
             app.UseMvc();
 
