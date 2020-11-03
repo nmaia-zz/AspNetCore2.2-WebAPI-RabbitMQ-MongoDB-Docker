@@ -14,8 +14,6 @@ using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
-    // TODO: Incluir o uso do polly para garantir a resiliencia da API
-    // TODO: Criar conventions e configurar analyzers para as controllers da API
     [Route("api/researches")]
     public class ResearchesController : MainController
     {
@@ -124,22 +122,8 @@ namespace Demo.API.Controllers
                 }
 
                 var researches = _mapper.Map<IEnumerable<Research>>(model);
-
-                var researchHasBeenPublished = false;
-
-                foreach (var research in researches)
-                {
-                    researchHasBeenPublished = await _researchServices.PublishResearch(research);
-
-                    if (researchHasBeenPublished)
-                    {
-                        if (research.Person.Children.Any())
-                            await _childrenTreeServices.PublishChildrenFamilyTree(research);
-
-                        await _parentsTreeServices.PublishParentsFamilyTree(research);
-                        await _ancestorsTreeServices.PublishAncestorsFamilyTree(research);
-                    }
-                }
+                
+                await publishResearchesAndFamilyTrees(researches);
 
                 return CustomResponse(model);
             }
@@ -151,6 +135,40 @@ namespace Demo.API.Controllers
                 NotifyError(ex.Message);
                 return CustomResponse();
             }
+        }
+
+        private async Task publishResearchesAndFamilyTrees(IEnumerable<Research> researches)
+        {
+            bool researchHasBeenPublished;
+
+            foreach (var research in researches)
+            {
+                try
+                {
+                    researchHasBeenPublished = await _researchServices.PublishResearch(research);
+                    
+                    await PublishFamilyTrees(research, researchHasBeenPublished);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation($"We couldn't publish the following research: {research}");
+                    _logger.LogError(ex.Message, ex.StackTrace);
+                }
+            }
+        }
+
+        private async Task PublishFamilyTrees(Research research, bool canPublish)
+        {
+            if (canPublish)
+            {
+                if (research.Person.Children.Any())
+                    await _childrenTreeServices.PublishChildrenFamilyTree(research);
+
+                await _parentsTreeServices.PublishParentsFamilyTree(research);
+                await _ancestorsTreeServices.PublishAncestorsFamilyTree(research);
+            }
+            else
+                return;
         }
     }
 }
