@@ -10,6 +10,7 @@ jobs:
   build:
     env: 
       UNIT_TESTS_PROJECT_PATH: ./Demo/tests/Demo.UnitTests/Demo.UnitTests/Demo.Tests.csproj
+      INTEGRATION_TESTS_PROJECT_PATH: ./Demo/tests/Demo.IntegrationTests/Demo.IntegrationTests/Demo.Tests.csproj
       WEBAPI_SOLUTION_PATH: ./Demo/Demo.sln
 
     runs-on: ubuntu-latest
@@ -23,6 +24,9 @@ jobs:
         
     - name: Executing Unit Tests
       run: dotnet test ${{ env.UNIT_TESTS_PROJECT_PATH }} --verbosity minimal        
+        
+    - name: Executing Integration Tests
+      run: dotnet test ${{ env.INTEGRATION_TESTS_PROJECT_PATH }} --verbosity minimal         
         
     - name: Install dependencies
       run: dotnet restore ${{ env.WEBAPI_SOLUTION_PATH }}
