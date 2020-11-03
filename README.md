@@ -36,8 +36,27 @@ A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (Mon
   - Compose Containers
 
   ```
-  docker-compose up
+  docker-compose up -d
   ```
+
+- Once you run the above command, all the images I've set up in the docker-compose.yml file will start their own containers.
+
+- In order to check the running containers you can run the following command:
+
+  ```
+  docker container ps
+  ```
+  
+- If you want to check what port the API is using, you can run the following command:
+
+  ```
+  docker-compose ps
+  ```
+  
+- If the API doesn't open automatically on the browser, you can use the above command to get the port is being used for the API and access the API with this URL:
+
+  - `http://localhost:<port>/swagger/index.html`: where `<port>` will be the port listed by the command `docker-compose ps`.
+  - **Important!** - You have to use the `HTTP` port that points to port `80`.
 
 ## After running the containers, you should have the following environment:
 
