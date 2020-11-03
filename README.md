@@ -17,7 +17,7 @@ A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (Mon
 
 ## Requirements to run this project:
 
-- [sp.Net Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2) (SDK or Runtime);
+- [Asp.Net Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2) (SDK or Runtime);
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) - to run Linux Containers;
 
 ## In order to run this project, you must go on the followint steps:
