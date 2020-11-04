@@ -20,7 +20,7 @@ A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (Mon
 - [Asp.Net Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2) (SDK or Runtime);
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) - to run Linux Containers;
 
-## In order to run this project, you must go on the followint steps:
+## In order to run this project, you must go on the following steps:
 
 - Clone the git repository;
 - Open the local folder where the repository was downloaded;
@@ -39,7 +39,7 @@ A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (Mon
   docker-compose up -d
   ```
 
-- Once you run the above command, all the images I've set up in the docker-compose.yml file will start their own containers.
+- Once you run the above command, all the images I've set up in the `docker-compose.yml` file will start their own containers.
 
 - In order to check the running containers you can run the following command:
 
