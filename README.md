@@ -7,7 +7,7 @@ A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (Mon
 
 ## This project was developed using the following structure:
 
-![Solution Architecure Image](https://github.com/nmaia/AspNetCore-WebAPI-RabbitMQ-MongoDB/blob/develop/Demo/docs/Solution%20Architecture/Solution-Architecture.png)
+![Solution Architecure Image](https://github.com/nmaia/AspNetCore-WebAPI-RabbitMQ-MongoDB/blob/develop/Demo/docs/Project%20Structure/Project_Structure.png)
 
 ## Just a short story about how is the data flow on this project:
 
