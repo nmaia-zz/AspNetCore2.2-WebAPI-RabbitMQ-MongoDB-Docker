@@ -1,4 +1,4 @@
-# AspNetCore-WebAPI-RabbitMQ-MongoDB
+# AspNetCore2.2-WebAPI-RabbitMQ-MongoDB-Docker
 A project using Web API (Asp.Net Core 2.2), xUnit, RabbitMQ, NoSQL Database (MongoDB) and also Docker.
 
 ## For the CI (Continuous Integration) I've used the following tool:
